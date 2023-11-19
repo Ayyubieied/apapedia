@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>Login</title>
+</head>
+
+<body>
+  <!-- <nav th:replace="~{fragments/navbar :: navbar}"></nav> -->
+  <div class="container">
+    <div class="card m-4 p-4">
+      <div class="card-body">
+        <div class="justify-content-center">
+          <h2>Login</h2>
+          <br>
+          <ul th:if="${validationErrors} != null">
+            <li th:each="error:${validationErrors}">
+              <span th:text="${error.defaultMessage}"></span>
+            </li>
+          </ul>
+          <form th:action="@{/seller/login}" th:object="${userDTO}" method="POST">
+            Username: <br>
+            <input class="form-control" type="text" th:field="*{username}" />
+            <br><br>
+
+            Password: <br>
+            <input required class="form-control" type="password" th:field="*{password}" />
+
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <a class="btn btn-primary" href="/">Home</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
