@@ -3,12 +3,10 @@ package apapedia.user.restcontroller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-<<<<<<< HEAD
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-=======
 // import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,20 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
->>>>>>> origin/development
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import apapedia.user.dto.UserMapper;
-<<<<<<< HEAD
-import apapedia.user.dto.request.CreateUserRequestDTO;
-import apapedia.user.dto.response.SellerResponseDTO;
-import apapedia.user.restservice.UserRestService;
-import jakarta.validation.Valid;
-
-=======
 import apapedia.user.dto.auth.RegisterSellerRequest;
 import apapedia.user.restservice.UserRestService;
 import jakarta.validation.Valid;
@@ -42,7 +32,22 @@ import apapedia.user.dto.response.SellerResponse;
 import apapedia.user.dto.response.UpdateBalanceResponse;
 
 import java.time.LocalDateTime;
->>>>>>> origin/development
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.server.ResponseStatusException;
+
+import apapedia.user.dto.UserMapper;
+import apapedia.user.dto.request.CreateUserRequestDTO;
+import apapedia.user.dto.request.UpdateUserRequestDTO;
+import apapedia.user.dto.response.CustomerResponseDTO;
+import apapedia.user.dto.response.SellerResponseDTO;
+import apapedia.user.model.Seller;
+import apapedia.user.restservice.UserRestService;
+import jakarta.validation.Valid;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -56,11 +61,7 @@ public class SellerRestController {
     UserMapper userMapper;
 
     @PostMapping("/create")
-<<<<<<< HEAD
-    public ResponseEntity<SellerResponseDTO> createSeller(@Valid @RequestBody CreateUserRequestDTO sellerDTO, BindingResult bindingResult){
-=======
     public ResponseEntity<SellerResponse> createSeller(@Valid @RequestBody RegisterSellerRequest sellerDTO, BindingResult bindingResult){
->>>>>>> origin/development
         if(bindingResult.hasFieldErrors()){
             throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
@@ -73,18 +74,12 @@ public class SellerRestController {
     }
 
     @GetMapping("/retrieve/{idUser}")
-<<<<<<< HEAD
-    public ResponseEntity<SellerResponseDTO> retrieveSeller(@PathVariable("idUser") UUID idSeller){
-=======
     // @PreAuthorize("hasAuthority('ROLE_SELLER')") 
     public ResponseEntity<SellerResponse> retrieveSeller(@PathVariable("idUser") UUID idSeller){
->>>>>>> origin/development
         var seller = userService.getSeller(idSeller);
         var sellerResponse = userMapper.sellerToSellerResponseDTO(seller);
         return ResponseEntity.ok(sellerResponse);
     }
-<<<<<<< HEAD
-=======
 
     @DeleteMapping("/delete/{idUser}")
     public ResponseEntity<String> deleteUser(@PathVariable("idUser") UUID idSeller){
@@ -121,5 +116,4 @@ public class SellerRestController {
             return ResponseEntity.ok(sellerResponse);
         }
     }
->>>>>>> origin/development
 }

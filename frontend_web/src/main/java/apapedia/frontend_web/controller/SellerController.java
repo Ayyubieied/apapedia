@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import apapedia.frontend_web.dto.request.CreateUserRequestDTO;
-<<<<<<< HEAD
 import apapedia.frontend_web.dto.response.SellerDTO;
 import jakarta.validation.Valid;
 
-=======
 import apapedia.frontend_web.dto.request.WithdrawDTO;
 import apapedia.frontend_web.dto.response.SellerDTO;
 import jakarta.validation.Valid;
 
 import java.util.UUID;
 
->>>>>>> origin/development
+import apapedia.frontend_web.dto.response.SellerDTO;
+import jakarta.validation.Valid;
+
 @Controller
 @RequestMapping("/seller")
 public class SellerController {
@@ -46,8 +46,6 @@ public class SellerController {
         model.addAttribute("userDTO", userDTO);
         return "auth/login";
     }
-<<<<<<< HEAD
-=======
 
     @GetMapping("/withdraw/{idUser}")
     public String withdrawBalanceForm(@PathVariable("idUser") String idUser, Model model){
@@ -73,6 +71,7 @@ public class SellerController {
     //     model.addAttribute("withdrawDTO", withdrawDTO);
     //     return "withdraw-balance";
     // }
+
     @GetMapping("/edit")
     public String formEditSeller(Model model){
         var userDTO = new CreateUserRequestDTO();
@@ -84,5 +83,5 @@ public class SellerController {
     public String editSeller() {
         return "success-edit-seller";
     }
->>>>>>> origin/development
+
 }

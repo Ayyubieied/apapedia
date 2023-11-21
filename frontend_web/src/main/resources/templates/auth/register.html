@@ -9,7 +9,6 @@
 </head>
 
 <body>
-<<<<<<< HEAD
   <!-- <nav th:replace="~{fragments/navbar :: navbar}"></nav> -->
   <div class="container">
     <div class="card m-4 p-4">
@@ -46,47 +45,6 @@
             <button class="btn btn-primary" type="submit">Submit</button>
             <a class="btn btn-primary" href="/">Home</a>
           </form>
-=======
-  <nav th:replace="~{fragments/navbar-not-logged-in}"></nav>
-  <div class="container-fluid text-center">
-    <br>
-    <br>
-    <div class="row justify-content-center">
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-header">
-            Register
-          </div>
-          <div class="card-body">
-            <div th:if="${param.error}">
-              <span style="color: red">Invalid username and password.</span>
-            </div>
-            <br>
-            <form th:action="@{/seller/login}" th:object="${userDTO}" method="POST">
-              <div class="row form-group">
-                Name:
-                <input class="col-sm-8 form-control input-sm" type="text" th:field="*{nameUser}" />
-              </div>
-              <div class="row form-group">
-                Username:
-                <input class="col-sm-8 form-control input-sm" type="text" th:field="*{username}" />
-              </div>
-              <div class="row form-group">
-                Password:
-                <input class="col-sm-8 form-control input-sm" type="password" th:field="*{password}" />
-              </div>
-              <div class="row form-group">
-                Email:
-                <input class="col-sm-8 form-control input-sm" type="text" th:field="*{email}" />
-              </div>
-              <div class="row form-group">
-                Address:
-                <input class="col-sm-8 form-control input-sm" type="text" th:field="*{address}" />
-              </div>
-              <button class="btn btn-primary" type="submit">Register</button>
-            </form>
-          </div>
->>>>>>> origin/development
         </div>
       </div>
     </div>
