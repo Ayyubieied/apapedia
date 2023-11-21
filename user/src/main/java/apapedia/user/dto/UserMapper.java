@@ -2,7 +2,7 @@ package apapedia.user.dto;
 
 import org.mapstruct.Mapper;
 
-import apapedia.user.dto.request.CreateUserRequestDTO;
+import apapedia.user.dto.request.*;
 import apapedia.user.dto.response.CustomerResponseDTO;
 import apapedia.user.dto.response.SellerResponseDTO;
 import apapedia.user.dto.response.UserResponseDTO;
@@ -20,4 +20,10 @@ public interface UserMapper {
 
     Customer createUserRequestDTOToCustomer(CreateUserRequestDTO customerResponseDTO);
     CustomerResponseDTO customerToCustomerResponseDTO(Customer customer);
+
+    User updateUserRequestDTOToUser(UpdateUserRequestDTO updateUserRequestDTO);
+
+    Seller updateUserRequestDTOToSeller(UpdateUserRequestDTO updateUserRequestDTO);
+
+    Customer updateUserRequestDTOToCustomer(UpdateUserRequestDTO updateUserRequestDTO);
 }

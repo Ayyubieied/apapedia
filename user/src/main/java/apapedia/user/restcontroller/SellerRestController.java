@@ -10,14 +10,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.server.ResponseStatusException;
 
 import apapedia.user.dto.UserMapper;
 import apapedia.user.dto.request.CreateUserRequestDTO;
+import apapedia.user.dto.request.UpdateUserRequestDTO;
+import apapedia.user.dto.response.CustomerResponseDTO;
 import apapedia.user.dto.response.SellerResponseDTO;
+import apapedia.user.model.Seller;
 import apapedia.user.restservice.UserRestService;
 import jakarta.validation.Valid;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -48,5 +53,19 @@ public class SellerRestController {
         var seller = userService.getSeller(idSeller);
         var sellerResponse = userMapper.sellerToSellerResponseDTO(seller);
         return ResponseEntity.ok(sellerResponse);
+    }
+    
+    @RequestMapping(value="/edit/{idUser}", method = RequestMethod.PUT)
+    public ResponseEntity<SellerResponseDTO> restUpdateSeller(@PathVariable("idUser") UUID idSeller, @Valid @RequestBody UpdateUserRequestDTO sellerDTO, BindingResult bindingResult) {
+        if(bindingResult.hasFieldErrors()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
+        } else {
+            sellerDTO.setIdUser(idSeller);
+            var seller = userMapper.updateUserRequestDTOToSeller(sellerDTO);
+            seller.setUpdatedAt(LocalDateTime.now());
+            userService.updateRestSeller(seller);
+            var sellerResponse = userMapper.sellerToSellerResponseDTO(seller);
+            return ResponseEntity.ok(sellerResponse);
+        }
     }
 }
