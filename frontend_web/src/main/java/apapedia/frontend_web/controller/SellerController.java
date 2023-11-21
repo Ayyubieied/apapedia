@@ -37,4 +37,16 @@ public class SellerController {
         model.addAttribute("userDTO", userDTO);
         return "auth/login";
     }
+
+    @GetMapping("/edit")
+    public String formEditSeller(Model model){
+        var userDTO = new CreateUserRequestDTO();
+        model.addAttribute("userDTO", userDTO);
+        return "edit-seller-page";
+    }
+
+    @PostMapping("/edit")
+    public String editSeller() {
+        return "success-edit-seller";
+    }
 }
