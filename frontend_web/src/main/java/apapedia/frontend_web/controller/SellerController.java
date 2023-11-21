@@ -83,5 +83,4 @@ public class SellerController {
     public String editSeller() {
         return "success-edit-seller";
     }
-
 }
