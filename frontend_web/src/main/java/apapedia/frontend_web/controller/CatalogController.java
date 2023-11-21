@@ -21,6 +21,11 @@ public class CatalogController {
         return "catalog-detail";
     }
 
+    @GetMapping("/order/history")
+    public String orderHistory(){
+        return "order-history-page";
+    }
+
     @GetMapping("/catalog/tambah")
     public String formTambahCatalog(Model model) {
         var catalogDTO = new CreateCatalogRequestDTO();
