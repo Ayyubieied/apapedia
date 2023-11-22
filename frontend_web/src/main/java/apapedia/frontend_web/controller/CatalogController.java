@@ -41,6 +41,9 @@ public class CatalogController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @GetMapping("/catalog")
     public String viewCatalogPage(Model model){
         RestTemplate restTemplate = new RestTemplate();
