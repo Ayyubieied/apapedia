@@ -1,7 +1,14 @@
 package apapedia.frontend_web.controller;
 
 import apapedia.frontend_web.dto.request.CreateCatalogRequestDTO;
+<<<<<<< HEAD
 import jakarta.validation.Valid;
+=======
+
+import apapedia.frontend_web.dto.response.CatalogDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+>>>>>>> 99a0b76 (Laura/catalog)
 import org.springframework.stereotype.Controller;
 
 import apapedia.frontend_web.dto.request.UpdateCatalogRequestDTO;
@@ -15,6 +22,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -30,6 +38,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+=======
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.client.RestTemplate;
+
+>>>>>>> 99a0b76 (Laura/catalog)
 import java.util.List;
 import java.util.UUID;
 
@@ -38,9 +51,28 @@ public class CatalogController {
     //TODO: change this
     private static final String URL_API_CATALOG = "http://localhost:8084";
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @GetMapping("/catalog")
     public String viewCatalogPage(Model model){
+<<<<<<< HEAD
         RestTemplate restTemplate = new RestTemplate();
+=======
+        String url = "http://localhost:8084/api/catalog/view-all";
+        List<CatalogDTO> listCatalog = restTemplate.getForObject(url, List.class);
+        model.addAttribute("listCatalog", listCatalog);
+        return "view-catalog";
+    }
+
+    @GetMapping("/catalog/{sellerId}")
+    public String viewCatalogSellerPage(Model model, @PathVariable UUID sellerId){
+        String url = "http://localhost:8084/api/catalog/" + sellerId.toString();
+        List<CatalogDTO> listCatalog = restTemplate.getForObject(url, List.class);
+        model.addAttribute("listCatalog", listCatalog);
+        return "view-catalog";
+    }
+>>>>>>> 99a0b76 (Laura/catalog)
 
         try {
             ResponseEntity<List<ReadCatalogResponseDTO>> catalogResponse = restTemplate.exchange(
@@ -208,3 +240,4 @@ public class CatalogController {
         return "redirect:/catalog/detail/" + catalogDTO.getId();
     }
 }
+
