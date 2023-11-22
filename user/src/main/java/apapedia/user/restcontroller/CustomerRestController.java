@@ -60,7 +60,10 @@ public class CustomerRestController {
         } else {
             customerDTO.setIdUser(idCustomer);
             var customer = userMapper.updateUserRequestDTOToCustomer(customerDTO);
+            var customerFromDto = userService.getCustomer(idCustomer);
             customer.setUpdatedAt(LocalDateTime.now());
+            customer.setCreatedAt(customerFromDto.getCreatedAt());
+            customer.setCartId(customerFromDto.getCartId());
             userService.updateRestCustomer(customer);
             var customerResponse = userMapper.customerToCustomerResponseDTO(customer);
             return ResponseEntity.ok(customerResponse);
