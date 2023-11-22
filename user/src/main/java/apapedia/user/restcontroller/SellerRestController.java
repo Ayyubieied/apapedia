@@ -62,7 +62,9 @@ public class SellerRestController {
         } else {
             sellerDTO.setIdUser(idSeller);
             var seller = userMapper.updateUserRequestDTOToSeller(sellerDTO);
+            var sellerFromDto = userService.getSeller(idSeller);
             seller.setUpdatedAt(LocalDateTime.now());
+            seller.setCreatedAt(sellerFromDto.getCreatedAt());
             userService.updateRestSeller(seller);
             var sellerResponse = userMapper.sellerToSellerResponseDTO(seller);
             return ResponseEntity.ok(sellerResponse);

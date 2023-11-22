@@ -48,6 +48,8 @@ public class UserRestService {
                 seller.setPassword(sellerDTO.getPassword());
                 seller.setEmail(sellerDTO.getEmail());
                 seller.setAddress(sellerDTO.getAddress());
+                seller.setCreatedAt(sellerDTO.getCreatedAt());
+                seller.setUpdatedAt(LocalDateTime.now());
                 sellerDb.save(seller);
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password must be different from the old password");
@@ -73,7 +75,6 @@ public class UserRestService {
 
     public Customer updateRestCustomer(Customer customerDTO) {
         Customer customer = getCustomer(customerDTO.getIdUser());
-        //customer.setCreatedAt(customer.getCreatedAt());
         if (customer != null) {
             if (!customer.getPassword().equals(customerDTO.getPassword())) {
                 customer.setNameUser(customerDTO.getNameUser());
@@ -81,6 +82,9 @@ public class UserRestService {
                 customer.setPassword(customerDTO.getPassword());
                 customer.setEmail(customerDTO.getEmail());
                 customer.setAddress(customerDTO.getAddress());
+                customer.setCreatedAt(customerDTO.getCreatedAt());
+                customer.setUpdatedAt(LocalDateTime.now());
+                customer.setCartId(customerDTO.getCartId());
                 customerDb.save(customer);
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password must be different from the old password");
