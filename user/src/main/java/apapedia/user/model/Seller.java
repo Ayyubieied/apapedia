@@ -1,7 +1,5 @@
 package apapedia.user.model;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -20,5 +18,5 @@ import lombok.Setter;
 public class Seller extends User{
     @NotNull
     @Column(nullable = false)
-    private String category = "Biasa";
+    private String category;
 }

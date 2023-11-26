@@ -1,16 +1,22 @@
 package apapedia.user.restservice;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import apapedia.user.dto.request.UpdateBalanceRequest;
+import apapedia.user.dto.response.UpdateBalanceResponse;
 import apapedia.user.model.Customer;
 import apapedia.user.model.Seller;
+import apapedia.user.model.User;
 import apapedia.user.repository.CustomerDb;
 import apapedia.user.repository.SellerDb;
+import apapedia.user.repository.UserDb;
+
 import jakarta.transaction.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
@@ -25,9 +31,17 @@ public class UserRestService {
     @Autowired
     private CustomerDb customerDb;
 
+    @Autowired
+    private UserDb userDb;
+
+    // @Autowired
+    // private PasswordEncoder encoder;
+
     public void createRestSeller(Seller seller){
+        // seller.setPassword(encoder.encode(seller.getPassword()));
         seller.setCreatedAt(LocalDateTime.now());
         seller.setUpdatedAt(LocalDateTime.now());
+        seller.setRole("seller");
         sellerDb.save(seller);
     }
 
@@ -35,6 +49,32 @@ public class UserRestService {
         return sellerDb.findSellerByIdUser(idSeller);
     }
 
+    public void createRestCustomer(Customer customer){
+        // customer.setPassword(encoder.encode(customer.getPassword()));
+        customer.setCreatedAt(LocalDateTime.now());
+        customer.setUpdatedAt(LocalDateTime.now());
+        customer.setRole("customer");
+        customerDb.save(customer);
+    }
+
+    public Customer getCustomer(UUID idSeller){
+        return customerDb.findCustomerByIdUser(idSeller);
+    }
+
+    public void deleteUser(Seller user){
+        System.out.println("masuk delete 2");
+        userDb.delete(user);
+    }
+
+    public UpdateBalanceResponse updateBalance(UpdateBalanceRequest request){
+        User user = userDb.findByIdUser(request.getIdUser());
+        user.setBalance(user.getBalance()+request.getMoney());
+        userDb.save(user);
+        var response = new UpdateBalanceResponse(request.getIdUser(), request.getMoney(), user.getBalance(), true);
+        return response;
+    }
+
+    
     public List<Seller> getAllSeller() {
         return sellerDb.findAll(); 
     }
@@ -56,17 +96,6 @@ public class UserRestService {
             }
         }
         return seller;
-    }
-
-    public void createRestCustomer(Customer customer){
-        LocalDateTime now = LocalDateTime.now();
-        customer.setCreatedAt(now);
-        customer.setUpdatedAt(now);
-        customerDb.save(customer);
-    }
-
-    public Customer getCustomer(UUID idCustomer){
-        return customerDb.findCustomerByIdUser(idCustomer);
     }
 
     public List<Customer> getAllCustomer() {
