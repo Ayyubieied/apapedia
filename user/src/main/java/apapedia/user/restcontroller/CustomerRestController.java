@@ -86,6 +86,21 @@ public class CustomerRestController {
     }
         UpdateBalanceResponse response = userService.updateBalance(topUpRequest);
         return ResponseEntity.ok(response);
+    @RequestMapping(value="/edit/{idUser}", method = RequestMethod.PUT)
+    public ResponseEntity<CustomerResponseDTO> restUpdateCustomer(@PathVariable("idUser") UUID idCustomer, @Valid @RequestBody UpdateUserRequestDTO customerDTO, BindingResult bindingResult) {
+        if(bindingResult.hasFieldErrors()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
+        } else {
+            customerDTO.setIdUser(idCustomer);
+            var customer = userMapper.updateUserRequestDTOToCustomer(customerDTO);
+            var customerFromDto = userService.getCustomer(idCustomer);
+            customer.setUpdatedAt(LocalDateTime.now());
+            customer.setCreatedAt(customerFromDto.getCreatedAt());
+            customer.setCartId(customerFromDto.getCartId());
+            userService.updateRestCustomer(customer);
+            var customerResponse = userMapper.customerToCustomerResponseDTO(customer);
+            return ResponseEntity.ok(customerResponse);
+        }
     }
 >>>>>>> origin/development
 }
