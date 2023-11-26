@@ -2,17 +2,49 @@ package apapedia.frontend_web.controller;
 
 import apapedia.frontend_web.dto.request.CreateCatalogRequestDTO;
 
+<<<<<<< HEAD
+import apapedia.frontend_web.dto.response.CatalogDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.UUID;
+=======
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
+>>>>>>> 24a1678ba8c712177d22f82b9563abb48d12e02c
 
 @Controller
 public class CatalogController {
 
+<<<<<<< HEAD
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @GetMapping("/catalog")
+    public String viewCatalogPage(Model model){
+        String url = "http://localhost:8084/api/catalog/view-all";
+        List<CatalogDTO> listCatalog = restTemplate.getForObject(url, List.class);
+        model.addAttribute("listCatalog", listCatalog);
+        return "view-catalog";
+    }
+
+    @GetMapping("/catalog/{sellerId}")
+    public String viewCatalogSellerPage(Model model, @PathVariable UUID sellerId){
+        String url = "http://localhost:8084/api/catalog/" + sellerId.toString();
+        List<CatalogDTO> listCatalog = restTemplate.getForObject(url, List.class);
+        model.addAttribute("listCatalog", listCatalog);
+=======
     @GetMapping("/catalog")
     public String viewCatalogPage(){
+>>>>>>> 24a1678ba8c712177d22f82b9563abb48d12e02c
         return "view-catalog";
     }
 
@@ -35,3 +67,7 @@ public class CatalogController {
     }
 
 }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 24a1678ba8c712177d22f82b9563abb48d12e02c
