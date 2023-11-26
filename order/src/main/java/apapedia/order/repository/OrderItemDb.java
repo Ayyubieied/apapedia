@@ -1,15 +1,15 @@
-// package apapedia.order.repository;
+package apapedia.order.repository;
 
-// import java.util.List;
-// import java.util.UUID;
+import java.util.List;
+import java.util.UUID;
 
-// import org.springframework.data.jpa.repository.JpaRepository;
-// import org.springframework.stereotype.Repository;
-// import apapedia.order.model.OrderItem;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-// @Repository
-// public interface OrderItemDb extends JpaRepository<OrderItem, UUID> {
-//     // List<OrderItem> findAll();
+import apapedia.order.model.OrderItem;
+import org.springframework.stereotype.Repository;
 
-//     // List<OrderItem> findByProductName(Integer productName);
-// }
+@Repository
+public interface OrderItemDb extends JpaRepository<OrderItem, UUID> {
+    List<OrderItem> findAll();
+
+}
