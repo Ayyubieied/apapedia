@@ -23,6 +23,9 @@ public class CreateUserRequestDTO {
     @NotBlank(message = "Email tidak boleh kosong!")
     private String email;
 
+    @NotBlank(message = "category")
+    private String category;
+
     private long balance;
 
     @NotBlank(message = "Alamat tidak boleh kosong!")
