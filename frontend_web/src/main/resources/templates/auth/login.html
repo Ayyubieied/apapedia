@@ -9,29 +9,33 @@
 </head>
 
 <body>
-  <!-- <nav th:replace="~{fragments/navbar :: navbar}"></nav> -->
-  <div class="container">
-    <div class="card m-4 p-4">
-      <div class="card-body">
-        <div class="justify-content-center">
-          <h2>Login</h2>
-          <br>
-          <ul th:if="${validationErrors} != null">
-            <li th:each="error:${validationErrors}">
-              <span th:text="${error.defaultMessage}"></span>
-            </li>
-          </ul>
-          <form th:action="@{/seller/login}" th:object="${userDTO}" method="POST">
-            Username: <br>
-            <input class="form-control" type="text" th:field="*{username}" />
-            <br><br>
-
-            Password: <br>
-            <input required class="form-control" type="password" th:field="*{password}" />
-
-            <button class="btn btn-primary" type="submit">Submit</button>
-            <a class="btn btn-primary" href="/">Home</a>
-          </form>
+  <nav th:replace="~{fragments/navbar-not-logged-in}"></nav>
+  <div class="container-fluid text-center">
+    <br>
+    <br>
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">
+            Log In
+          </div>
+          <div class="card-body">
+            <div th:if="${param.error}">
+              <span style="color: red">Invalid username and password.</span>
+            </div>
+            <br>
+            <form th:action="@{/seller/login}" th:object="${userDTO}" method="POST">
+              <div class="row form-group">
+                Username:
+                <input class="col-sm-8 form-control input-sm" type="text" th:field="*{username}" />
+              </div>
+              <div class="row form-group">
+                Password:
+                <input class="col-sm-8 form-control input-sm" type="password" th:field="*{password}" />
+              </div>
+              <button class="btn btn-primary" type="submit">Sign In</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>

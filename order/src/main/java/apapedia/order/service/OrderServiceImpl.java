@@ -1,11 +1,11 @@
 package apapedia.order.service;
 
-import java.util.Date;
+import java.util.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
+import apapedia.order.dto.CreateOrderDto;
+import apapedia.order.dto.StatsDto;
+import apapedia.order.dto.UpdateOrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import apapedia.order.model.Cart;
@@ -14,7 +14,9 @@ import apapedia.order.model.Order;
 import apapedia.order.model.OrderItem;
 import apapedia.order.repository.OrderDb;
 import apapedia.order.repository.OrderItemDb;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -24,64 +26,70 @@ public class OrderServiceImpl implements OrderService {
     OrderItemDb orderItemDb;
 
     @Override
-    public Order cartOrder(Cart cart) {
-        List<CartItem> cartItemList = cart.getCartItem();
-        Order order = new Order();
+    public void createOrder(List<CreateOrderDto> createOrderDto, UUID userId) {
+        Map<UUID, Order> sellerOrders = new HashMap<>();
 
-        order.setCreatedAt(new Date());
-        order.setUpdatedAt(new Date());
-        order.setStatus(0);
-        order.setTotalPrice(cart.getTotalPrice());
-        order.setCustomer(cart.getUserId());
-        order.setSeller(UUID.randomUUID());
-        orderDb.save(order);
+        for (CreateOrderDto orderItem : createOrderDto) {
+            OrderItem item = new OrderItem();
+            item.setQuantity(orderItem.getQuantity());
+            item.setProductId(orderItem.getProductId());
+            item.setProductName(orderItem.getProductName());
+            item.setProductPrice(orderItem.getPrice());
 
-        for (CartItem cartItem : cartItemList) {
-            OrderItem orderItem = new OrderItem();
+            UUID sellerId = orderItem.getSeller();
 
-            orderItem.setProductId(cartItem.getProductId());
-            orderItem.setOrderId(order.getId());
-            orderItem.setQuantity(cartItem.getQuantity());
-            orderItem.setProductName(1);
-            orderItem.setProductPrice(10000);
-            order.getOrderItem().add(cartItem);
-            orderItemDb.save(orderItem);
+            Order sellerOrder = sellerOrders.getOrDefault(sellerId, new Order());
+            sellerOrder.setSeller(sellerId);
+            sellerOrder.setCustomer(userId);
+            sellerOrder.setTotalPrice(sellerOrder.getTotalPrice() + (item.getProductPrice() * item.getQuantity()));
+
+            Order createdOrder = orderDb.save(sellerOrder);
+            item.setOrderId(createdOrder);
+            orderItemDb.save(item);
+
+            sellerOrders.put(sellerId, createdOrder);
         }
-        orderDb.save(order);
-
-        return order;
     }
 
     @Override
-    public Order createOrder(CartItem cartItem, UUID userId) {
-        Order order = new Order();
-        OrderItem orderItem = new OrderItem();
-
-        orderItem.setProductId(cartItem.getProductId());
-        orderItem.setOrderId(order.getId());
-        orderItem.setQuantity(cartItem.getQuantity());
-        orderItem.setProductName(1);
-        orderItem.setProductPrice(10000);
-
-        order.setCreatedAt(new Date());
-        order.setUpdatedAt(new Date());
-        order.setStatus(0);
-        order.setTotalPrice(cartItem.getQuantity() * orderItem.getProductPrice());
-        order.setCustomer(userId);
-        order.setSeller(UUID.randomUUID());
-
-        order.getOrderItem().add(cartItem);
-        orderItemDb.save(orderItem);
+    public void updateOrder(UUID orderId, UpdateOrderDto updateOrderDto) {
+        Order order = orderDb.findById(orderId).get();
+        order.setStatus(updateOrderDto.getStatus());
         orderDb.save(order);
-
-        return order;
     }
 
-    public Order updateOrder(Order order, Integer status) {
-        order.setStatus(status);
-        orderDb.save(order);
-
-        return order;
+    @Override
+    public List<Order> getCustomerOrder(UUID userId) {
+        return orderDb.findAllByCustomer(userId);
     }
-    
+
+    @Override
+    public List<Order> getSellerOrder(UUID userId) {
+        return orderDb.findAllBySeller(userId);
+    }
+
+    @Override
+    public List<StatsDto> getStats(UUID userId) {
+        List<StatsDto> stats = new ArrayList<>();
+        Map<String, Integer> statsMap = new HashMap<>();
+        List<Order> orders = orderDb.findAllBySeller(userId);
+        for (Order order:  orders) {
+            if (order.getStatus() == 5) {
+                for (OrderItem orderItem: order.getOrderItem()                    ) {
+                    if (statsMap.containsKey(orderItem.getProductName())) {
+                        statsMap.put(orderItem.getProductName(), statsMap.get(orderItem.getProductName()) + 1);
+                    } else {
+                        statsMap.put(orderItem.getProductName(), 1);
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, Integer> entry : statsMap.entrySet()) {
+            stats.add(new StatsDto(entry.getKey(), entry.getValue()));
+        }
+
+        return stats;
+    }
+
 }
