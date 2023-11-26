@@ -5,17 +5,50 @@
   <meta charset="UTF-8" />
   <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
   <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+<<<<<<< HEAD
+  <title>Edit Seller Page</title>
+</head>
+
+<body>
+=======
   <title>Edit Seller Profile Page</title>
 </head>
 
 <body>
   <!-- <nav th:replace="~{fragments/navbar :: navbar}"></nav> -->
+>>>>>>> origin/development
   <div class="container">
     <div class="card m-4 p-4">
       <div class="card-body">
         <div class="justify-content-center">
           <h2>Edit Profile</h2>
           <br>
+<<<<<<< HEAD
+          <form th:action="@{/seller/edit}" th:object="${sellerDTO}" method="POST">
+            <input class="form-control" type="hidden" th:field="*{idSeller}"/>
+
+            Name: <br>
+            <input class="form-control" type="text" th:field="*{nameSeller}"/>
+            <br><br>
+
+            Username: <br>
+            <input class="form-control" type="text" th:field="*{usernameSeller}"/>
+            <br><br>
+
+            Email: <br>
+            <input class="form-control" type="text" th:field="*{emailSeller}"/>
+            <br><br>
+
+            Password: <br>
+            <input class="form-control" type="text" th:field="*{passwordSeller}"/>
+            <br><br>
+
+            Address: <br>
+            <input class="form-control" type="text" th:field="*{addressSeller}"/>
+            <br><br>
+            
+            <button class="btn btn-primary" type="submit">Save</button>
+=======
           <!-- <ul th:if="${validationErrors} != null">
             <li th:each="error:${validationErrors}">
               <span th:text="${error.defaultMessage}"></span>
@@ -44,10 +77,15 @@
 
             <button class="btn btn-primary" type="submit">Save</button>
             <a class="btn btn-danger" href="javascript:history.back()">Cancel</a>
+>>>>>>> origin/development
           </form>
         </div>
       </div>
     </div>
   </div>
 </body>
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/development
 </html>

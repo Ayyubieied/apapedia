@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>Edit Customer Page</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card m-4 p-4">
+      <div class="card-body">
+        <div class="justify-content-center">
+          <h2>Edit Profile</h2>
+          <br>
+          <form th:action="@{/customer/edit}" th:object="${customerDTO}" method="POST">
+            <input class="form-control" type="hidden" th:field="*{idCustomer}"/>
+
+            Name: <br>
+            <input class="form-control" type="text" th:field="*{nameCustomer}"/>
+            <br><br>
+
+            Username: <br>
+            <input class="form-control" type="text" th:field="*{usernameCustomer}"/>
+            <br><br>
+
+            Email: <br>
+            <input class="form-control" type="text" th:field="*{emailCustomer}"/>
+            <br><br>
+
+            Password: <br>
+            <input class="form-control" type="text" th:field="*{passwordCustomer}"/>
+            <br><br>
+
+            Address: <br>
+            <input class="form-control" type="text" th:field="*{addressCustomer}"/>
+            <br><br>
+            
+            <button class="btn btn-primary" type="submit">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

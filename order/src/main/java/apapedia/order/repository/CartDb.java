@@ -12,7 +12,6 @@ import jakarta.transaction.Transactional;
 @Repository
 @Transactional
 public interface CartDb extends JpaRepository<Cart, UUID> {
-    List<Cart> findAll();
-
-    // Cart findById(UUID id);
+    Cart findCartByCartId(UUID cartId);
+    Cart findCartByUserId(UUID userId);
 }

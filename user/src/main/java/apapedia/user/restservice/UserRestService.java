@@ -1,10 +1,22 @@
 package apapedia.user.restservice;
 
+<<<<<<< HEAD
+=======
 import java.util.List;
+>>>>>>> origin/development
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
+import org.springframework.stereotype.Service;
+
+import apapedia.user.model.Customer;
+import apapedia.user.model.Seller;
+import apapedia.user.repository.CustomerDb;
+import apapedia.user.repository.SellerDb;
+import jakarta.transaction.Transactional;
+=======
 // import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +33,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 
+>>>>>>> origin/development
 
 @Service
 @Transactional
@@ -31,6 +44,11 @@ public class UserRestService {
     @Autowired
     private CustomerDb customerDb;
 
+<<<<<<< HEAD
+    public void createRestSeller(Seller seller){
+        seller.setCreatedAt(LocalDateTime.now());
+        seller.setUpdatedAt(LocalDateTime.now());
+=======
     @Autowired
     private UserDb userDb;
 
@@ -42,6 +60,7 @@ public class UserRestService {
         seller.setCreatedAt(LocalDateTime.now());
         seller.setUpdatedAt(LocalDateTime.now());
         seller.setRole("seller");
+>>>>>>> origin/development
         sellerDb.save(seller);
     }
 
@@ -50,16 +69,23 @@ public class UserRestService {
     }
 
     public void createRestCustomer(Customer customer){
+<<<<<<< HEAD
+        customer.setCreatedAt(LocalDateTime.now());
+        customer.setUpdatedAt(LocalDateTime.now());
+=======
         // customer.setPassword(encoder.encode(customer.getPassword()));
         customer.setCreatedAt(LocalDateTime.now());
         customer.setUpdatedAt(LocalDateTime.now());
         customer.setRole("customer");
+>>>>>>> origin/development
         customerDb.save(customer);
     }
 
     public Customer getCustomer(UUID idSeller){
         return customerDb.findCustomerByIdUser(idSeller);
     }
+<<<<<<< HEAD
+=======
 
     public void deleteUser(Seller user){
         System.out.println("masuk delete 2");
@@ -121,4 +147,5 @@ public class UserRestService {
         }
         return customer;
     }
+>>>>>>> origin/development
 }
