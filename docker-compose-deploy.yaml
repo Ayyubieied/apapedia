@@ -10,8 +10,6 @@ services:
       - ./log:/log
     env_file:
       - frontend_web/.env
-    depends_on:
-      - db-fe
     networks:
       - frontend-network
       - backend-network
@@ -41,7 +39,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=secret99
     volumes:
-      - db:/var/lib/postgresql/data
+      - db-user:/var/lib/postgresql/data
     networks:
       - backend-network
 
@@ -70,7 +68,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=secret99
     volumes:
-      - db:/var/lib/postgresql/data
+      - db-order:/var/lib/postgresql/data
     networks:
       - backend-network
 
@@ -85,7 +83,7 @@ services:
     env_file:
       - catalog/.env
     depends_on:
-      - db-fe
+      - db-catalog
     networks:
       - frontend-network
       - backend-network
@@ -99,7 +97,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=secret99
     volumes:
-      - db:/var/lib/postgresql/data
+      - db-catalog:/var/lib/postgresql/data
     networks:
       - backend-network
 
