@@ -9,31 +9,6 @@
 </head>
 
 <body>
-<<<<<<< HEAD
-  <!-- <nav th:replace="~{fragments/navbar :: navbar}"></nav> -->
-  <div class="container">
-    <div class="card m-4 p-4">
-      <div class="card-body">
-        <div class="justify-content-center">
-          <h2>Login</h2>
-          <br>
-          <ul th:if="${validationErrors} != null">
-            <li th:each="error:${validationErrors}">
-              <span th:text="${error.defaultMessage}"></span>
-            </li>
-          </ul>
-          <form th:action="@{/seller/login}" th:object="${userDTO}" method="POST">
-            Username: <br>
-            <input class="form-control" type="text" th:field="*{username}" />
-            <br><br>
-
-            Password: <br>
-            <input required class="form-control" type="password" th:field="*{password}" />
-
-            <button class="btn btn-primary" type="submit">Submit</button>
-            <a class="btn btn-primary" href="/">Home</a>
-          </form>
-=======
   <nav th:replace="~{fragments/navbar-not-logged-in}"></nav>
   <div class="container-fluid text-center">
     <br>
@@ -61,7 +36,6 @@
               <button class="btn btn-primary" type="submit">Sign In</button>
             </form>
           </div>
->>>>>>> 24a1678ba8c712177d22f82b9563abb48d12e02c
         </div>
       </div>
     </div>
