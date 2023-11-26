@@ -1,6 +1,9 @@
 package apapedia.user.repository;
 
+<<<<<<< HEAD
+=======
 import java.util.Optional;
+>>>>>>> origin/development
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +15,10 @@ import jakarta.transaction.Transactional;
 @Repository
 @Transactional
 public interface UserDb extends JpaRepository<User,UUID>{
+<<<<<<< HEAD
+    
+=======
     Optional<User> findByUsername(String username);
     User findByIdUser(UUID uuid);
+>>>>>>> origin/development
 }

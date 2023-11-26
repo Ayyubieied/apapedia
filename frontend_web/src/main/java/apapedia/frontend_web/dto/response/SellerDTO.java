@@ -19,6 +19,9 @@ public class SellerDTO {
     private String address;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+<<<<<<< HEAD
+=======
     private long balance;
+>>>>>>> origin/development
     private String category;
 }

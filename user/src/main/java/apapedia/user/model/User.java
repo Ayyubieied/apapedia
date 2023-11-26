@@ -3,9 +3,12 @@ package apapedia.user.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+<<<<<<< HEAD
+=======
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+>>>>>>> origin/development
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -25,18 +28,29 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name = "user_apapedia")
+<<<<<<< HEAD
+=======
 @SQLDelete(sql = "UPDATE user_apapedia SET deleted = true WHERE id_user=?")
 @Where(clause = "deleted=false")
+>>>>>>> origin/development
 public class User {
     @Id
     private UUID idUser = UUID.randomUUID();
 
     @NotNull
+<<<<<<< HEAD
+    @Column(name = "name_user")
+    private String nameUser;
+
+    @NotNull
+    @Column
+=======
     @Column(name = "name_user", unique = true)
     private String nameUser;
 
     @NotNull
     @Column(unique = true)
+>>>>>>> origin/development
     private String username;
 
     @NotNull
@@ -49,10 +63,13 @@ public class User {
 
     @NotNull
     @Column
+<<<<<<< HEAD
+=======
     private long balance = 0;
 
     @NotNull
     @Column
+>>>>>>> origin/development
     private String address;
 
     @NotNull
@@ -62,6 +79,8 @@ public class User {
     @NotNull
     @Column
     private LocalDateTime updatedAt;
+<<<<<<< HEAD
+=======
 
     @NotNull
     @Column
@@ -70,4 +89,5 @@ public class User {
     @NotNull
     @Column
     private String role;
+>>>>>>> origin/development
 }
