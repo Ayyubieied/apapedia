@@ -47,6 +47,6 @@ public class Order {
     // @JoinColumn(name = "id_seller", referencedColumnName = "id")
     // private Seller seller;
 
-    @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> orderItem = new ArrayList<>();
+    // @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<CartItem> orderItem = new ArrayList<>();
 }
