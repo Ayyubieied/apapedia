@@ -40,9 +40,28 @@ public class CartServiceImpl implements CartService {
         cartDb.save(cart);
     }
 
-    // @Override
-    // public Cart getCartById(UUID id) {
-    //     return cartDb.findById(id);
-    // }
-    
+    @Override
+    public List<Cart> getAllCart() {
+        return cartDb.findAll();
+    }
+
+    @Override
+    public Cart getCartById(UUID id) {
+        for (Cart cart : getAllCart()) {
+            if (cart.getCartId() == id) {
+                return cart;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Cart updateCart(Cart cartFromDTO) {
+        Cart cart = getCartById(cartFromDTO.getCartId());
+        if (cart != null){
+            cart.setListCartItem(cartFromDTO.getListCartItem());
+            cartDb.save(cart);
+        }
+        return cart;
+    }
 }

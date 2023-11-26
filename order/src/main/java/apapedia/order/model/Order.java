@@ -11,29 +11,31 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="order")
+@Table(name="orders")
 public class Order {
     @Id
-    @Column(name = "id", nullable = false)
-    private UUID id;
+    private UUID id = UUID.randomUUID();
 
-    @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
+    @Column(updatable = false)
     private Date createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @UpdateTimestamp
     private Date updatedAt;
 
     @Column(name = "status", nullable = false)
-    private Integer status;
+    private Integer status = 0;
 
     @Column(name = "total_price", nullable = false)
-    private Integer totalPrice;
+    private Integer totalPrice = 0;
 
     @Column(name = "customer", nullable = false)
     private UUID customer;
@@ -48,5 +50,5 @@ public class Order {
     // private Seller seller;
 
     @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> orderItem = new ArrayList<>();
+    private List<OrderItem> orderItem = new ArrayList<>();
 }

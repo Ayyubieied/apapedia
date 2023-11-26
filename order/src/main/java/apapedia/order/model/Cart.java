@@ -1,38 +1,37 @@
 package apapedia.order.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import apapedia.order.model.CartItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import jakarta.persistence.*;
-// import jakarta.validation.constraints.NotNull;
-// import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="cart")
+@Table(name = "cart")
 public class Cart {
     @Id
-    private UUID id = UUID.randomUUID();
-    // @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // private UUID id;
+    @Column(name = "cart_id", nullable = false)
+    private UUID cartId = UUID.randomUUID();
 
-    @Column(name = "user_id", nullable = false)
-    private UUID userId;
-    // @OneToOne(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // private User userId;
-
+    @NotNull
     @Column(name = "total_price", nullable = false)
     private Integer totalPrice;
 
-    @OneToMany(mappedBy = "cartId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartItem> cartItem = new ArrayList<>();
+    @NotNull
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
+
+    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CartItem> listCartItem;
+
 }
