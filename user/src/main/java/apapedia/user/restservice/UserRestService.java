@@ -5,6 +5,8 @@ package apapedia.user.restservice;
 import java.util.List;
 >>>>>>> origin/development
 import java.time.LocalDateTime;
+import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +88,79 @@ public class UserRestService {
     }
 <<<<<<< HEAD
 =======
+
+    public void deleteUser(Seller user){
+        System.out.println("masuk delete 2");
+        userDb.delete(user);
+    }
+
+    public UpdateBalanceResponse updateBalance(UpdateBalanceRequest request){
+        User user = userDb.findByIdUser(request.getIdUser());
+        user.setBalance(user.getBalance()+request.getMoney());
+        userDb.save(user);
+        var response = new UpdateBalanceResponse(request.getIdUser(), request.getMoney(), user.getBalance(), true);
+        return response;
+    }
+
+    
+    public List<Seller> getAllSeller() {
+        return sellerDb.findAll(); 
+    }
+
+    public Seller updateRestSeller(Seller sellerDTO) {
+        Seller seller = getSeller(sellerDTO.getIdUser());
+        if (seller != null){
+            if (!seller.getPassword().equals(sellerDTO.getPassword())) {
+                seller.setNameUser(sellerDTO.getNameUser());
+                seller.setUsername(sellerDTO.getUsername());
+                seller.setPassword(sellerDTO.getPassword());
+                seller.setEmail(sellerDTO.getEmail());
+                seller.setAddress(sellerDTO.getAddress());
+                seller.setCreatedAt(sellerDTO.getCreatedAt());
+                seller.setUpdatedAt(LocalDateTime.now());
+                sellerDb.save(seller);
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password must be different from the old password");
+            }
+        }
+        return seller;
+    }
+
+    public void createRestCustomer(Customer customer){
+        // customer.setPassword(encoder.encode(customer.getPassword()));
+        customer.setCreatedAt(LocalDateTime.now());
+        customer.setUpdatedAt(LocalDateTime.now());
+        customer.setRole("customer");
+        customerDb.save(customer);
+    }
+
+    public Customer getCustomer(UUID idCustomer){
+        return customerDb.findCustomerByIdUser(idCustomer);
+    }
+
+    public List<Customer> getAllCustomer() {
+        return customerDb.findAll(); 
+    }
+
+    public Customer updateRestCustomer(Customer customerDTO) {
+        Customer customer = getCustomer(customerDTO.getIdUser());
+        if (customer != null) {
+            if (!customer.getPassword().equals(customerDTO.getPassword())) {
+                customer.setNameUser(customerDTO.getNameUser());
+                customer.setUsername(customerDTO.getUsername());
+                customer.setPassword(customerDTO.getPassword());
+                customer.setEmail(customerDTO.getEmail());
+                customer.setAddress(customerDTO.getAddress());
+                customer.setCreatedAt(customerDTO.getCreatedAt());
+                customer.setUpdatedAt(LocalDateTime.now());
+                customer.setCartId(customerDTO.getCartId());
+                customerDb.save(customer);
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New password must be different from the old password");
+            }
+        }
+        return customer;
+    }
 
     public void deleteUser(Seller user){
         System.out.println("masuk delete 2");
