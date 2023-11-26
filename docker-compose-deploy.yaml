@@ -102,7 +102,12 @@ services:
       - backend-network
 
 volumes:
-  db:
+  db-user:
+    driver: local
+  db-order:
+    driver: local
+  db-catalog:
+    driver: local
 
 networks:
   frontend-network:
