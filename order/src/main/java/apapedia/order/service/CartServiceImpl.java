@@ -1,16 +1,39 @@
 package apapedia.order.service;
 
-import apapedia.order.repository.CartDb;
-import apapedia.order.model.Cart;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-@Service
+import org.springframework.beans.factory.annotation.Autowired;
+
+import apapedia.order.model.Cart;
+import apapedia.order.repository.CartDb;
+import apapedia.order.repository.CartItemDb;
+
 public class CartServiceImpl implements CartService {
+
     @Autowired
-    CartDb cartDb;
+    private CartDb cartDb;
+
+    @Autowired
+    private CartItemDb cartItemDb;
+
+    @Override
+    public List<Cart> getAllCart() {
+        return cartDb.findAll();
+    }
+
+    // @Override
+    // public Cart updateCart(Cart cartFromDTO) {
+    //     Cart cart = getCartById(cartFromDTO.getId());
+
+    //     if (cart != null) {
+    //         cart.setId(cartFromDTO.getId());
+    //         cart.setUserId(cartFromDTO.getUserId());
+    //         cart.setTotalPrice(cartFromDTO.getTotalPrice());
+    //         cartDb.save(cart);
+    //     }
+    //     return cart;
+    // }
 
     @Override
     public void saveCart(Cart cart) {
