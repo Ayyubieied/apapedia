@@ -1,8 +1,7 @@
 version: '3.3'
 services:
   web-fe:
-    build:
-      context: ./frontend_web
+    image: apap-registry.cs.ui.ac.id/griselda.neysa/apap-058
     restart: always
     ports:
       - "10058:8080"
@@ -16,21 +15,20 @@ services:
       - backend-network
 
   web-user:
-    build:
-        context: ./user
-    restart: always
-    ports:
-      - "10059:8080"
-    volumes:
-      - ./file-storage:/file-storage
-      - ./log:/log
-    env_file:
-      - user/.env
-    depends_on:
-      - db-user
-    networks:
-      - frontend-network
-      - backend-network
+  image: apap-registry.cs.ui.ac.id/griselda.neysa/apap-059
+  restart: always
+  ports:
+    - "10059:8080"
+  volumes:
+    - ./file-storage:/file-storage
+    - ./log:/log
+  env_file:
+    - user/.env
+  depends_on:
+    - db-user
+  networks:
+    - frontend-network
+    - backend-network
 
   db-user:
     image: postgres:14-alpine
@@ -46,8 +44,7 @@ services:
       - backend-network
 
   web-order:
-    build:
-      context: ./order
+    image: apap-registry.cs.ui.ac.id/griselda.neysa/apap-060
     restart: always
     ports:
       - "10060:8080"
@@ -76,8 +73,7 @@ services:
       - backend-network
 
   web-catalog:
-    build:
-      context: ./catalog
+    image: apap-registry.cs.ui.ac.id/griselda.neysa/apap-061
     restart: always
     ports:
       - "10061:8080"
