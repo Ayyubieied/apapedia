@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
         order.setCustomer(userId);
         order.setSeller(UUID.randomUUID());
 
-        order.getOrderItem().add(cartItem);
+        // order.getOrderItem().add(cartItem);
         orderItemDb.save(orderItem);
         orderDb.save(order);
 
