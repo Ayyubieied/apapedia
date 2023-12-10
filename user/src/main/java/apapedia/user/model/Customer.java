@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "customer")
-public class Customer extends User {
+public class Customer extends UserApapedia {
     @NotNull
     @Column
     private UUID cartId = UUID.randomUUID();

@@ -23,7 +23,7 @@
             <div class="justify-content-center" style="margin:0 auto; padding:20px 0;">
                 <span>Sisa balance Anda</span>
                 <h2>
-                    <span th:text="${withdrawDTO.balance}" th:remove="tag">title</span>
+                    <span th:text="${withdrawDTO.balance}"></span>
                 </h2>
             </div>
             <form th:action="@{/withdraw/{withdrawDTO}}" th:object="${withdrawDTO}" method="POST">

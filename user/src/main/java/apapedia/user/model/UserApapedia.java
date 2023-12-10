@@ -8,6 +8,8 @@ import org.hibernate.annotations.Where;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -27,7 +29,7 @@ import lombok.Setter;
 @Table(name = "user_apapedia")
 @SQLDelete(sql = "UPDATE user_apapedia SET deleted = true WHERE id_user=?")
 @Where(clause = "deleted=false")
-public class User {
+public class UserApapedia {
     @Id
     private UUID idUser = UUID.randomUUID();
 
@@ -68,5 +70,6 @@ public class User {
 
     @NotNull
     @Column
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private ERole role;
 }

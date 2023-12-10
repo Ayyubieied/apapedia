@@ -59,11 +59,11 @@
             <br />
 
             Kategori Produk
-            <select th:field="*{category.id}" class="form-control" required>
-              <div th:each="category: ${categories}">
+            <select th:field="*{category}" class="form-control" required>
+              <div th:each="category1: ${categories}">
                 <option
-                  th:value="${category.id}"
-                  th:text="${category.name}"
+                  th:value="${category1.id}"
+                  th:text="${category1.name}"
                 ></option>
               </div>
             </select>

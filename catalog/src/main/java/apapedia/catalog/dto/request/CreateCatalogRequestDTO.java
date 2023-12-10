@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateCatalogRequestDTO {
-    @NotNull
+    // @NotNull
     private UUID seller;
     @NotNull
     @Positive
@@ -24,7 +24,7 @@ public class CreateCatalogRequestDTO {
     @NotNull
     private String productDescription;
     @NotNull
-    private Category category;
+    private UUID category;
     @PositiveOrZero
     @NotNull
     private Integer stok;

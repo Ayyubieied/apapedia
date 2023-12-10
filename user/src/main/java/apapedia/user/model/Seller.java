@@ -1,8 +1,5 @@
 package apapedia.user.model;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.annotation.Value;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -18,8 +15,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name = "seller")
-public class Seller extends User{
+public class Seller extends UserApapedia{
     @NotNull
     @Column(nullable = false)
-    private String category = "Biasa";
+    private String category;
 }

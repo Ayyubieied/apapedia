@@ -21,16 +21,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Locale.Category;
 import java.util.UUID;
 
 @Controller
@@ -41,8 +35,29 @@ public class CatalogController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private RestTemplate restTemplate;
+    @GetMapping("/")
+    public String viewCatalogPageAll(Model model){
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+            ResponseEntity<List<ReadCatalogResponseDTO>> catalogResponse = restTemplate.exchange(
+                    URL_API_CATALOG + "/api/catalog/all",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<>() {
+                    }
+            );
+
+            if (catalogResponse.getStatusCode().is2xxSuccessful()) {
+                model.addAttribute("catalogs", catalogResponse.getBody());
+            } else {
+                model.addAttribute("error", catalogResponse.getBody());
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "catalog/view-catalog-all";
+    }
 
     @GetMapping("/catalog")
     public String viewCatalogPage(Model model){
@@ -104,24 +119,34 @@ public class CatalogController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<CreateCatalogRequestDTO> requestEntity = new HttpEntity<>(catalogDTO, headers);
 
-        try {
-            ResponseEntity<ReadCatalogResponseDTO> newCatalog = restTemplate.exchange(
+        ResponseEntity<ReadCatalogResponseDTO> newCatalog = restTemplate.exchange(
                     URL_API_CATALOG + "/api/catalog/create-catalog",
                     HttpMethod.POST,
                     requestEntity,
                     ReadCatalogResponseDTO.class
             );
 
-            if (newCatalog.getStatusCode().is2xxSuccessful()) {
+        if (newCatalog.getStatusCode().is2xxSuccessful()) {
                 redirectAttributes.addFlashAttribute("success", "Berhasil menambahkan catalog");
-            } else {
-                redirectAttributes.addFlashAttribute("error", newCatalog.getBody());
-                return "redirect:/catalog/tambah";
-            }
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/catalog/tambah";
         }
+        // try {
+        //     ResponseEntity<ReadCatalogResponseDTO> newCatalog = restTemplate.exchange(
+        //             URL_API_CATALOG + "/api/catalog/create-catalog",
+        //             HttpMethod.POST,
+        //             requestEntity,
+        //             ReadCatalogResponseDTO.class
+        //     );
+
+        //     if (newCatalog.getStatusCode().is2xxSuccessful()) {
+        //         redirectAttributes.addFlashAttribute("success", "Berhasil menambahkan catalog");
+        //     } else {
+        //         redirectAttributes.addFlashAttribute("error", newCatalog.getBody());
+        //         return "redirect:/catalog/tambah";
+        //     }
+        // } catch (Exception e) {
+        //     redirectAttributes.addFlashAttribute("error", e.getMessage());
+        //     return "redirect:/catalog/tambah";
+        // }
 
         return "redirect:/catalog";
     }

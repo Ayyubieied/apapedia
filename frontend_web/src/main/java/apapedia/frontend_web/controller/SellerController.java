@@ -1,28 +1,35 @@
 package apapedia.frontend_web.controller;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import apapedia.frontend_web.dto.auth.LoginRequest;
+import apapedia.frontend_web.dto.auth.LoginResponse;
 import apapedia.frontend_web.dto.request.CreateUserRequestDTO;
 import apapedia.frontend_web.dto.response.SellerDTO;
 import jakarta.validation.Valid;
 
 import apapedia.frontend_web.dto.request.WithdrawDTO;
-import apapedia.frontend_web.dto.response.SellerDTO;
-import jakarta.validation.Valid;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.UUID;
-
-import apapedia.frontend_web.dto.response.SellerDTO;
-import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/seller")
 public class SellerController {
+
+    private final WebClient webClient;
+
+    public SellerController(WebClient.Builder webClientBuilder){
+        this.webClient = webClientBuilder.build();
+    }
 
     @GetMapping("/register")
     public String formRegisterSeller(Model model){
@@ -32,45 +39,79 @@ public class SellerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<SellerDTO> createSeller(@Valid @ModelAttribute CreateUserRequestDTO userDTO, BindingResult bindingResult){
-        System.out.println("Ini nama " + userDTO.getNameUser());
-        String uri = "http://localhost:8082/api/seller/create";
+    public String createSeller(@Valid @ModelAttribute CreateUserRequestDTO userDTO, HttpServletResponse response){
+        String uri = "http://localhost:8082/api/authentication/create/seller";
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<SellerDTO> response = restTemplate.postForEntity(uri, userDTO, SellerDTO.class);
-        return response;
+        ResponseEntity<LoginResponse> loginResponse = restTemplate.postForEntity(uri, userDTO, LoginResponse.class);
+
+        response.addCookie(new Cookie("jwtToken", loginResponse.getBody().getJwtToken()));
+
+        return "redirect:/seller/login";
     }
 
     @GetMapping("/login")
     public String formLoginSeller(Model model){
-        var userDTO = new CreateUserRequestDTO();
-        model.addAttribute("userDTO", userDTO);
+        var loginRequest = new LoginRequest();
+        model.addAttribute("userDTO", loginRequest);
         return "auth/login";
     }
 
+    @PostMapping("/login")
+    public String loginSeller(LoginRequest loginRequest, Model model, HttpServletResponse response){
+        String uri = "http://localhost:8082/api/authentication/login";
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<LoginResponse> loginResponse = restTemplate.postForEntity(uri, loginRequest, LoginResponse.class);
+
+        response.addCookie(new Cookie("jwtToken", loginResponse.getBody().getJwtToken()));
+        
+        return "redirect:/catalog";
+    }
+
     @GetMapping("/withdraw/{idUser}")
-    public String withdrawBalanceForm(@PathVariable("idUser") String idUser, Model model){
-        // String uri = "http://localhost:8082/api/retrieve/" + idUser;
-        // RestTemplate restTemplate = new RestTemplate();
-        // ResponseEntity<SellerDTO> response = restTemplate.getForEntity(uri, SellerDTO.class);
-        // var seller = response.getBody();
+    public String withdrawBalanceForm(
+                            @PathVariable("idUser") String idUser, 
+                            HttpSession session,
+                            Model model){
+        String jwtToken = (String) session.getAttribute("token");
+
+        var response = this.webClient
+                .get()
+                .uri("http://localhost:8082/api/seller/retrieve/" + idUser)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
+                .retrieve()
+                .bodyToMono(SellerDTO.class);
+        var user = response.block();
 
         var withdrawDTO = new WithdrawDTO();
-        withdrawDTO.setIdUser(UUID.fromString(idUser));
-        withdrawDTO.setBalance(100000);
+        withdrawDTO.setIdUser(user.getIdUser());
+        withdrawDTO.setBalance(user.getBalance());
+
         model.addAttribute("withdrawDTO", withdrawDTO);
+
         return "withdraw-balance";
     }
 
-    // @PostMapping("/withdraw/{idUser}")
-    // public String withdrawBalance(@PathVariable("idUser") UUID idUser, @Valid @ModelAttribute WithdrawDTO withdrawReqDTO, Model model){
-    //     String uri = "http://localhost:8082/api/seller/update-balance";
-    //     RestTemplate restTemplate = new RestTemplate();
-    //     ResponseEntity<WithdrawDTO> response = restTemplate.postForEntity(uri, withdrawReqDTO, WithdrawDTO.class);
-    //     var withdrawDTO = response.getBody();
+    @PostMapping("/withdraw/{idUser}")
+    public String withdrawBalance(
+                        @PathVariable("idUser") UUID idUser, 
+                        HttpSession session,
+                        @Valid @ModelAttribute WithdrawDTO withdrawReqDTO, 
+                        Model model){
+        withdrawReqDTO.setWithdrawal(-(withdrawReqDTO.getWithdrawal()));
+        String jwtToken = (String) session.getAttribute("token");
 
-    //     model.addAttribute("withdrawDTO", withdrawDTO);
-    //     return "withdraw-balance";
-    // }
+        var response = this.webClient
+                .post()
+                .uri("http://localhost:8082/api/seller/update-balance")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
+                .bodyValue(withdrawReqDTO)
+                .retrieve()
+                .bodyToMono(WithdrawDTO.class);
+        var withdrawDTO = response.block();
+        
+        model.addAttribute("withdrawDTO", withdrawDTO);
+        return "withdraw-balance";
+    }
 
     @GetMapping("/edit")
     public String formEditSeller(Model model){
