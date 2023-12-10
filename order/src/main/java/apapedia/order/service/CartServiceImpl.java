@@ -17,11 +17,6 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CartItemDb cartItemDb;
 
-    @Override
-    public List<Cart> getAllCart() {
-        return cartDb.findAll();
-    }
-
     // @Override
     // public Cart updateCart(Cart cartFromDTO) {
     //     Cart cart = getCartById(cartFromDTO.getId());

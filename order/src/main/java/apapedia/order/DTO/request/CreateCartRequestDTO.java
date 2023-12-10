@@ -1,4 +1,4 @@
-package apapedia.order.DTO.request;
+package apapedia.order.dto.request;
 
 import apapedia.order.model.Cart;
 import apapedia.order.model.CartItem;

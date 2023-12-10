@@ -1,5 +1,6 @@
 package apapedia.catalog.restcontroller;
 
+import apapedia.catalog.model.Category;
 import apapedia.catalog.restservice.CategoryRestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ public class CategoryRestController {
     CategoryRestService categoryRestService;
 
     @GetMapping("/api/category/all")
-    public ResponseEntity getAllCategory() {
+    public ResponseEntity<?> getAllCategory() {
         try {
             return new ResponseEntity<>(categoryRestService.getAll(), HttpStatus.OK);
         } catch (Exception e) {

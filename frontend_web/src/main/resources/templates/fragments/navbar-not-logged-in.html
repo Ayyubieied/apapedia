@@ -6,8 +6,8 @@
 >
   <head>
     <meta charset="UTF-8" />
-    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
-    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <object th:include="~{fragments/fragment :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/fragment :: css}" th:remove="tag"></object>
     <style>
       .navbar a.nav-link.active {
         color: #007bff; /* Warna teks tautan aktif */
@@ -38,9 +38,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
           <li class="nav-item dropdown">
-<<<<<<< HEAD
             <a
               class="nav-link dropdown-toggle"
               th:classappend="${requestPage== 'masuk' ? 'nav-link active' : ''}"
@@ -56,13 +54,6 @@
               <li>
                 <a class="dropdown-item" href="/seller/register">Register</a>
               </li>
-=======
-            <a class="nav-link dropdown-toggle" th:classappend="${requestPage== 'masuk' ? 'nav-link active' : ''}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Masuk
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="/seller/register">Register</a></li>
->>>>>>> development
               <li><a class="dropdown-item" href="/seller/login">Login</a></li>
             </ul>
           </li>

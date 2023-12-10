@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import apapedia.catalog.model.Catalog;
+import apapedia.catalog.repository.CategoryDb;
 import apapedia.catalog.restservice.CatalogRestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,8 @@ public class CatalogRestController {
     CatalogRestService catalogRestService;
     @Autowired
     CatalogMapper catalogMapper;
+    @Autowired
+    CategoryDb categoryDb;
 
     @PostMapping("/api/catalog/create-catalog")
     public ResponseEntity createCatalog(@Valid @RequestBody CreateCatalogRequestDTO catalogDTO, BindingResult bindingResult) {
@@ -44,10 +47,11 @@ public class CatalogRestController {
             }
             return new ResponseEntity<>(res.toString(), HttpStatus.BAD_REQUEST);
         }
-
         try {
-            var catalog = catalogMapper.createCatalogRequestDTOToCatalog(catalogDTO);
-            return new ResponseEntity<>(catalogRestService.createCatalog(catalog), HttpStatus.OK);
+            var catalog = catalogMapper.createCatalogRequestDTOToCatalog(catalogDTO, categoryDb);
+            catalogRestService.createCatalog(catalog);
+            var catalogToDTO = catalogMapper.catalogToCatalogResponseDTO(catalog);
+            return new ResponseEntity<>(catalogToDTO, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
