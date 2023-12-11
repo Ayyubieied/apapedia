@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import apapedia.user.dto.UserMapper;
-import apapedia.user.dto.auth.LoginJwtRequest;
-import apapedia.user.dto.auth.LoginRequest;
-import apapedia.user.dto.auth.LoginResponse;
-import apapedia.user.dto.auth.RegisterRequest;
-import apapedia.user.dto.auth.RegisterSellerRequest;
-import apapedia.user.dto.response.CustomerResponse;
-import apapedia.user.dto.response.SellerResponse;
+import apapedia.user.DTO.UserMapper;
+import apapedia.user.DTO.auth.LoginJwtRequest;
+import apapedia.user.DTO.auth.LoginRequest;
+import apapedia.user.DTO.auth.LoginResponse;
+import apapedia.user.DTO.auth.RegisterRequest;
+import apapedia.user.DTO.auth.RegisterSellerRequest;
+import apapedia.user.DTO.response.CustomerResponse;
+import apapedia.user.DTO.response.SellerResponse;
 import apapedia.user.restservice.UserRestService;
 import jakarta.validation.Valid;
 
