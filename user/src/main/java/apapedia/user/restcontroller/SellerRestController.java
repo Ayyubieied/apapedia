@@ -58,7 +58,6 @@ public class SellerRestController {
     public ResponseEntity<SellerResponse> retrieveSeller(@PathVariable("idUser") UUID idSeller){
         var seller = userService.getSeller(idSeller);
         var sellerResponse = userMapper.sellerToSellerResponseDTO(seller);
-        System.out.println("Ini retrieve user" + sellerResponse.getBalance());
         return ResponseEntity.ok(sellerResponse);
     }
 
@@ -78,7 +77,6 @@ public class SellerRestController {
             throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         }
-        
         UpdateBalanceResponse response = userService.updateBalance(withdrawRequest);
         return ResponseEntity.ok(response);
     }

@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import apapedia.frontend_web.dto.auth.LoginRequest;
 import apapedia.frontend_web.dto.auth.LoginResponse;
 import apapedia.frontend_web.dto.request.CreateUserRequestDTO;
+import apapedia.frontend_web.dto.request.WithdrawDTO;
 import apapedia.frontend_web.dto.response.SellerDTO;
 import jakarta.validation.Valid;
 
