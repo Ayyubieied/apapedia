@@ -1,8 +1,8 @@
 package apapedia.order.restcontroller;
 
-import apapedia.order.DTO.request.CreateOrderDto;
-import apapedia.order.DTO.request.StatsDto;
-import apapedia.order.DTO.request.UpdateOrderDto;
+import apapedia.order.dto.request.CreateOrderDto;
+import apapedia.order.dto.request.StatsDto;
+import apapedia.order.dto.request.UpdateOrderDto;
 import apapedia.order.model.Order;
 import apapedia.order.restservice.OrderRestService;
 import jakarta.validation.Valid;

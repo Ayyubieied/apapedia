@@ -14,12 +14,18 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import org.springframework.beans.factory.annotation.Value;
 
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-    public static final String jwtSecret = System.getenv("JWT_SECRET");
-    public static final String jwtExpirationMs = System.getenv("JWT_EXPIRATION_MS");
+    //public static final String jwtSecret = System.getenv("JWT_SECRET");
+    //public static final String jwtExpirationMs = System.getenv("JWT_EXPIRATION_MS");
+    @Value("${user.app.jwtSecret}")
+    private String jwtSecret;
+
+    @Value("${user.app.jwtExpirationMs}")
+    private String jwtExpirationMs;
 
     public String generateJwtToken(UserApapedia user){
         return Jwts.builder()

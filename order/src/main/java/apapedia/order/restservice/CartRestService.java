@@ -6,8 +6,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestTemplate;
 
 import apapedia.order.model.*;
+import apapedia.order.dto.response.CustomerResponseDTO;
 import apapedia.order.repository.*;
 import jakarta.transaction.Transactional;
 
@@ -19,6 +24,8 @@ public class CartRestService {
 
     @Autowired
     private CartItemDb cartItemDb;
+
+    private RestTemplate restTemplate = new RestTemplate();
 
     public void createRestCart(Cart cart){
         cartDb.save(cart);
@@ -62,5 +69,18 @@ public class CartRestService {
         cartItem.setIsDeleted(true);
         cartItemDb.save(cartItem);
     }
+
+    public UUID retrieveCartId(UUID idUser){
+        String url = "http://localhost:8082/api/customer/retrieve/" + idUser.toString();
+        ResponseEntity<CustomerResponseDTO> response = restTemplate.exchange(
+            url,
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<CustomerResponseDTO>() {}
+        );
+        return response.getBody().getCartId();
+    }
+
+    
 
 }

@@ -3,9 +3,9 @@ package apapedia.order.restservice;
 import java.util.*;
 import java.time.LocalDate;
 
-import apapedia.order.DTO.request.CreateOrderDto;
-import apapedia.order.DTO.request.StatsDto;
-import apapedia.order.DTO.request.UpdateOrderDto;
+import apapedia.order.dto.request.CreateOrderDto;
+import apapedia.order.dto.request.StatsDto;
+import apapedia.order.dto.request.UpdateOrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import apapedia.order.model.Cart;

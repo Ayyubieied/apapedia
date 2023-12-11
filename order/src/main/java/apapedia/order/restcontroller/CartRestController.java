@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import apapedia.order.DTO.CartMapper;
-import apapedia.order.DTO.request.CreateCartItemRequestDTO;
-import apapedia.order.DTO.request.CreateCartRequestDTO;
-import apapedia.order.DTO.request.UpdateCartItemRequestDTO;
-import apapedia.order.DTO.request.UpdateCartRequestDTO;
-import apapedia.order.DTO.response.CartResponseDTO;
 import apapedia.order.model.CartItem;
+import apapedia.order.dto.CartMapper;
+import apapedia.order.dto.request.CreateCartRequestDTO;
+import apapedia.order.dto.request.CreateCartItemRequestDTO;
+import apapedia.order.dto.request.UpdateCartRequestDTO;
+import apapedia.order.dto.request.UpdateCartItemRequestDTO;
+import apapedia.order.dto.response.CartResponseDTO;
 import apapedia.order.restservice.CartRestService;
 import jakarta.validation.Valid;
 
@@ -37,9 +37,11 @@ public class CartRestController {
     @Autowired
     CartMapper cartMapper;
 
-    @PostMapping("/create")
-    public ResponseEntity<CartResponseDTO> createCart(@RequestBody CreateCartRequestDTO cartDTO){
+    @PostMapping("/create/{idUser}")
+    public ResponseEntity<CartResponseDTO> createCart(@PathVariable("idUser") UUID idUser, @RequestBody CreateCartRequestDTO cartDTO){
         var cart = cartMapper.createCartRequestDTOToCart(cartDTO);
+        cart.setCartId(cartService.retrieveCartId(idUser));
+        cart.setUserId(idUser);
         cartService.createRestCart(cart);
         var cartResponse = cartMapper.cartToCartResponseDTO(cart);
         return ResponseEntity.ok(cartResponse);

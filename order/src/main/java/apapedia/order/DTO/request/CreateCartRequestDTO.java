@@ -1,4 +1,4 @@
-package apapedia.order.DTO.request;
+package apapedia.order.dto.request;
 
 import apapedia.order.model.Cart;
 import apapedia.order.model.CartItem;
@@ -14,6 +14,5 @@ import java.util.UUID;
 
 public class CreateCartRequestDTO {
     private Integer totalPrice;
-    private UUID userId;
     private List<CartItem> listCartItem;
 }

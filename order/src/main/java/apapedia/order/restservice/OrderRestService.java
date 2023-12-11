@@ -3,9 +3,9 @@ package apapedia.order.restservice;
 import java.util.List;
 import java.util.UUID;
 
-import apapedia.order.DTO.request.CreateOrderDto;
-import apapedia.order.DTO.request.StatsDto;
-import apapedia.order.DTO.request.UpdateOrderDto;
+import apapedia.order.dto.request.CreateOrderDto;
+import apapedia.order.dto.request.StatsDto;
+import apapedia.order.dto.request.UpdateOrderDto;
 import apapedia.order.model.Cart;
 import apapedia.order.model.CartItem;
 import apapedia.order.model.Order;
