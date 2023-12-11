@@ -1,11 +1,11 @@
-package apapedia.order.service;
+package apapedia.order.restservice;
 
 import java.util.*;
 import java.time.LocalDate;
 
-import apapedia.order.dto.CreateOrderDto;
-import apapedia.order.dto.StatsDto;
-import apapedia.order.dto.UpdateOrderDto;
+import apapedia.order.DTO.request.CreateOrderDto;
+import apapedia.order.DTO.request.StatsDto;
+import apapedia.order.DTO.request.UpdateOrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import apapedia.order.model.Cart;
@@ -17,7 +17,7 @@ import apapedia.order.repository.OrderItemDb;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderServiceImpl implements OrderService {
+public class OrderRestServiceImpl implements OrderRestService {
 
     @Autowired
     OrderDb orderDb;

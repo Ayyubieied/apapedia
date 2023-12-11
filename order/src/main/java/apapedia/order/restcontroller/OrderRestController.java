@@ -1,10 +1,10 @@
-package apapedia.order.controller;
+package apapedia.order.restcontroller;
 
-import apapedia.order.dto.CreateOrderDto;
-import apapedia.order.dto.StatsDto;
-import apapedia.order.dto.UpdateOrderDto;
+import apapedia.order.DTO.request.CreateOrderDto;
+import apapedia.order.DTO.request.StatsDto;
+import apapedia.order.DTO.request.UpdateOrderDto;
 import apapedia.order.model.Order;
-import apapedia.order.service.OrderService;
+import apapedia.order.restservice.OrderRestService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +17,10 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/order")
-public class OrderController {
+public class OrderRestController {
     @Autowired
-    private OrderService orderService;
+    private OrderRestService orderService;
+    
     @PostMapping("/{userId}")
     public ResponseEntity<String> addOrder(@RequestBody List<CreateOrderDto> createOrderDto, @PathVariable("userId") UUID userId) {
         orderService.createOrder(createOrderDto, userId);

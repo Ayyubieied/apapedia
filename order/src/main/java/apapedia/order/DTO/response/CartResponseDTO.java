@@ -1,4 +1,4 @@
-package apapedia.order.dto.response;
+package apapedia.order.DTO.response;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

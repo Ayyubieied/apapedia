@@ -1,6 +1,7 @@
 package apapedia.user.restcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -84,10 +85,13 @@ public class AuthController {
             throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         }
-
-        var customer = userMapper.createUserRequestDTOToCustomer(customerDTO);
-        userService.createRestCustomer(customer);
-        var customerResponse = userMapper.customerToCustomerResponseDTO(customer);
-        return ResponseEntity.ok(customerResponse);
+        try {
+            var customer = userMapper.createUserRequestDTOToCustomer(customerDTO);
+            userService.createRestCustomer(customer);
+            var customerResponse = userMapper.customerToCustomerResponseDTO(customer);
+            return ResponseEntity.ok(customerResponse);
+        } catch (DuplicateKeyException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nama atau username yang Anda daftarkan sudah terdaftar.");
+        }
     }
 }

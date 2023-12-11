@@ -1,4 +1,4 @@
-package apapedia.order.dto;
+package apapedia.order.DTO.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
