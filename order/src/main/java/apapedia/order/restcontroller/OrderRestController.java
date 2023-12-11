@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 public class OrderRestController {
     @Autowired
     private OrderRestService orderService;
