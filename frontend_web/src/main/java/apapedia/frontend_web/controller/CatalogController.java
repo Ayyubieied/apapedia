@@ -316,13 +316,15 @@ public class CatalogController {
             String sellerId = jwtService.getIdFromJwtToken(jwtToken);
             System.out.println(sellerId);
             if (sellerId != null) {
-                url = "http://localhost:8084/api/catalog/" + sellerId + "/" + min + "/" + max;
+                url = "http://localhost:8084/api/catalog/price/" + sellerId + "/" + min + "/" + max;
             } else {
                 url = "http://localhost:8084/api/catalog/price/" + min + "/" + max;
             }
         } else {
             url = "http://localhost:8084/api/catalog/price/" + min + "/" + max;
         }
+
+        System.out.println(url);
 
         List listCatalog = restTemplate.getForObject(url, List.class);
 
@@ -353,9 +355,9 @@ public class CatalogController {
             System.out.println(sellerId);
             if (sellerId != null) {
                 if(search.equals("")){
-                    url = "http://localhost:8084/api/catalog/price/" + sellerId + min + "/" + max;
+                    url = "http://localhost:8084/api/catalog/price/" + sellerId + "/" + min + "/" + max;
                 } else {
-                    url = "http://localhost:8084/api/catalog/search/" + sellerId + search + "/price/" + min + "/" + max;
+                    url = "http://localhost:8084/api/catalog/search/" + sellerId + "/" + search + "/price/" + min + "/" + max;
                 }
             } else {
                 if(search.equals("")){
@@ -371,6 +373,8 @@ public class CatalogController {
                 url = "http://localhost:8084/api/catalog/search/" + search + "/price/" + min + "/" + max;
             }
         }
+
+        System.out.println(url);
 
         List listCatalog = restTemplate.getForObject(url, List.class);
         redirectAttrs.addFlashAttribute("listCatalogSearch", listCatalog);
