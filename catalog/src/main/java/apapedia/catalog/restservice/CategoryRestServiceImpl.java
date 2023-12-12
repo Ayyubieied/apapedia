@@ -18,7 +18,12 @@ public class CategoryRestServiceImpl implements CategoryRestService{
     }
 
     @Override
-    public List<String> getAll() {
+    public List<String> getAllCategoryName() {
         return categoryDb.findAllDistinct();
+    }
+
+    @Override
+    public List<Category> getAll() {
+        return categoryDb.findAll();
     }
 }

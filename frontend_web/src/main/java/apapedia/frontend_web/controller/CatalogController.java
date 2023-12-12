@@ -3,6 +3,7 @@ package apapedia.frontend_web.controller;
 import apapedia.frontend_web.dto.request.CreateCatalogRequestDTO;
 import apapedia.frontend_web.service.JwtService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 
 import apapedia.frontend_web.dto.request.UpdateCatalogRequestDTO;
@@ -13,11 +14,14 @@ import org.springframework.http.*;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +36,9 @@ public class CatalogController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     @GetMapping("/farelver")
     public String viewCatalogPageAll(Model model){
@@ -108,9 +115,31 @@ public class CatalogController {
     }
 
     @PostMapping("/catalog/tambah")
-    public String tambahCatalog(@ModelAttribute CreateCatalogRequestDTO catalogDTO, RedirectAttributes redirectAttributes) {
-        //TODO: ganti sama ID seller yang lagi log in
-        catalogDTO.setSeller(UUID.randomUUID());
+    public String tambahCatalog(@ModelAttribute CreateCatalogRequestDTO catalogDTO, @RequestParam("imageFile") MultipartFile imageFile, RedirectAttributes redirectAttributes, HttpSession httpSession) {
+        String jwtToken = (String) httpSession.getAttribute("token");
+
+        if (!imageFile.isEmpty()) {
+            try {
+                String filename = UUID.randomUUID().toString() + "-" + imageFile.getOriginalFilename();
+                String relativePath = "static/img/CatalogImage/" + filename;
+                File directory = new File(resourceLoader.getResource("classpath:").getURI().getPath());
+                String savePath = new File(directory, relativePath).getAbsolutePath();
+
+                System.out.println("Saving to: " + savePath);
+
+                imageFile.transferTo(new File(savePath));
+
+                String retrievePath = "/img/CatalogImage/" + filename;
+                catalogDTO.setImage(retrievePath);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                redirectAttributes.addFlashAttribute("error", "Failed to upload image");
+                return "redirect:/catalog/tambah";
+            }
+        }
+
+        catalogDTO.setSeller(UUID.fromString(jwtService.getIdFromJwtToken(jwtToken)));
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -127,24 +156,6 @@ public class CatalogController {
         if (newCatalog.getStatusCode().is2xxSuccessful()) {
                 redirectAttributes.addFlashAttribute("success", "Berhasil menambahkan catalog");
         }
-        // try {
-        //     ResponseEntity<ReadCatalogResponseDTO> newCatalog = restTemplate.exchange(
-        //             URL_API_CATALOG + "/api/catalog/create-catalog",
-        //             HttpMethod.POST,
-        //             requestEntity,
-        //             ReadCatalogResponseDTO.class
-        //     );
-
-        //     if (newCatalog.getStatusCode().is2xxSuccessful()) {
-        //         redirectAttributes.addFlashAttribute("success", "Berhasil menambahkan catalog");
-        //     } else {
-        //         redirectAttributes.addFlashAttribute("error", newCatalog.getBody());
-        //         return "redirect:/catalog/tambah";
-        //     }
-        // } catch (Exception e) {
-        //     redirectAttributes.addFlashAttribute("error", e.getMessage());
-        //     return "redirect:/catalog/tambah";
-        // }
 
         return "redirect:/catalog";
     }
@@ -262,7 +273,7 @@ public class CatalogController {
 
         List listCatalog = restTemplate.getForObject(url, List.class);
 
-        String urlListCat = "http://localhost:8084/api/category/all";
+        String urlListCat = "http://localhost:8084/api/category/all-name";
         List listCategory = restTemplate.getForObject(urlListCat, List.class);
 
         model.addAttribute("listCatalog", listCatalog);
