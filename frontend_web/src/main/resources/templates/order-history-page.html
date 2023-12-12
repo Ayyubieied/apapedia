@@ -28,18 +28,18 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- <tr th:each="barang, iterationStatus : ${listBarang}" 
+                <tr th:each="barang, iterationStatus : ${listOrder}" 
                     th:style="${iterationStatus.even} ? 'font-weight:bold;'">
                     <td th:text="${iterationStatus.count}"></td>
-                    <td th:text="${barang.skuBarang}"></td>
-                    <td th:text="${barang.merkBarang}"></td>
-                    <td th:text="${listTotalStok[iterationStatus.count-1]}"></td>
-                    <td th:text="${barang.hargaBarang}"></td>
+                    <td th:text="${barang.createdAt}"></td>
+                    <td th:text="${barang.customer}"></td>
+                    <td th:text="${barang.totalPrice}"></td>
+                    <td th:text="${barang.status}"></td>
                     <td>
-                        <a type="button" class="btn btn-md btn-secondary" th:href="@{/barang/{sku}(sku=${barang.skuBarang})}">Detail</a> 
+                        <a type="button" class="btn btn-md btn-secondary" th:href="@{/}">Detail</a> 
                     </td>
-                </tr> -->
-                <tr>
+                </tr>
+                <!-- <tr>
                     <td>1</td>
                     <td>22-11-2023</td>
                     <td>Apapedia</td>
@@ -48,7 +48,7 @@
                     <td>
                         <a type="button" class="btn btn-md btn-secondary" href="/">Update Status</a> 
                     </td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
     </div>

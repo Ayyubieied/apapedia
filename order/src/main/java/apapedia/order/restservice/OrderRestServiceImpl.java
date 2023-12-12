@@ -3,13 +3,11 @@ package apapedia.order.restservice;
 import java.util.*;
 import java.time.LocalDate;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import apapedia.order.DTO.request.CreateOrderDto;
 import apapedia.order.DTO.request.StatsDto;
 import apapedia.order.DTO.request.UpdateOrderDto;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import apapedia.order.model.Cart;
-import apapedia.order.model.CartItem;
 import apapedia.order.model.Order;
 import apapedia.order.model.OrderItem;
 import apapedia.order.repository.OrderDb;
@@ -90,6 +88,11 @@ public class OrderRestServiceImpl implements OrderRestService {
         }
 
         return stats;
+    }
+
+    @Override
+    public List<OrderItem> findByOrder(Order orderId) {
+        return orderItemDb.findByOrderId(orderId);
     }
 
 }
