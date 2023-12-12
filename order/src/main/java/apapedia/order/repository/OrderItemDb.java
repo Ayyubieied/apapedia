@@ -5,10 +5,13 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import apapedia.order.model.Order;
 import apapedia.order.model.OrderItem;
 
 public interface OrderItemDb extends JpaRepository<OrderItem, UUID> {
     List<OrderItem> findAll();
 
-    List<OrderItem> findByProductName(Integer productName);
+    List<OrderItem> findByProductName(String productName);
+
+    List<OrderItem> findByOrderId(Order orderId);
 }
