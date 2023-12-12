@@ -389,19 +389,6 @@ public class CatalogController {
         return "catalog-detail";
     }
 
-    private boolean hasRoleSeller(Authentication authentication) {
-        return authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_SELLER"));
-    }
-
-    private String getSellerIdFromCookies(HttpServletRequest request) {
-        String jwt = jwtService.parseJwt(request);
-        String id = jwtService.getIdFromJwtToken(jwt);
-        System.out.println(id);
-        return id;
-    }
-
-
     //-----------------------------------------------------Laura------------------------------------------------------//
 
 
