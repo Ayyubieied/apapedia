@@ -1,4 +1,4 @@
-package apapedia.user.dto.auth;
+package apapedia.user.DTO.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

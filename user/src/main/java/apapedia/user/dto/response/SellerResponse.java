@@ -1,4 +1,4 @@
-package apapedia.user.dto.response;
+package apapedia.user.DTO.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
