@@ -22,9 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.*;
 
 
 import java.util.UUID;
@@ -106,7 +105,7 @@ public class CatalogRestController {
         }
     }
 
-    @GetMapping("/api/catalog/{id}")
+    @GetMapping("/api/catalog/{id}/farelver")
     public ResponseEntity getCatalogByID(@PathVariable(value = "id") UUID idCatalog) {
         try {
             return new ResponseEntity<>(catalogRestService.getCatalogById(idCatalog), HttpStatus.OK);
@@ -128,6 +127,90 @@ public class CatalogRestController {
             //HttpRequest
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Id Seller " + sellerId + " not found"
+            );
+        }
+    }
+
+    @GetMapping(value = "/api/catalog/search/{search}")
+    private List<Catalog> retrieveAllCatalogByName(@PathVariable("search") String search){
+        try{
+            return catalogRestService.retrieveRestAllCatalogContaining(search);
+        } catch (NoSuchElementException e){
+            //HttpRequest
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Catalog " + search + " not found"
+            );
+        }
+    }
+
+    @GetMapping(value = "/api/catalog/price/{min}/{max}")
+    private List<Catalog> retrieveAllCatalogByPrice(@PathVariable("min") BigDecimal min, @PathVariable("max") BigDecimal max){
+        try{
+            return catalogRestService.retrieveRestAllCatalogPrice(min, max);
+        } catch (NoSuchElementException e){
+            //HttpRequest
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Catalog between price not found"
+            );
+        }
+    }
+
+    @GetMapping(value = "/api/catalog/search/{search}/price/{min}/{max}")
+    private List<Catalog> retrieveAllCatalogByNameAndPrice(@PathVariable("search") String search, @PathVariable("min") BigDecimal min, @PathVariable("max") BigDecimal max){
+        try{
+            return catalogRestService.retrieveRestAllCatalogContainingAndPrice(search, min, max);
+        } catch (NoSuchElementException e){
+            //HttpRequest
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Catalog not found"
+            );
+        }
+    }
+
+    @GetMapping(value = "/api/catalog/detail/{id}")
+    private Optional<Catalog> retrieveAllCatalogById(@PathVariable("id") String id){
+        try{
+            return catalogRestService.retrieveRestCatalogById(UUID.fromString(id));
+        } catch (NoSuchElementException e){
+            //HttpRequest
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Id " + id + " not found"
+            );
+        }
+    }
+
+    @GetMapping(value = "/api/catalog/search/{sellerId}/{search}")
+    private List<Catalog> retrieveAllSellerCatalogByName(@PathVariable("search") String search, @PathVariable("sellerId") String sellerId){
+        try{
+            return catalogRestService.retrieveRestAllSellerCatalogContaining(UUID.fromString(sellerId), search);
+        } catch (NoSuchElementException e){
+            //HttpRequest
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Catalog " + search + " not found"
+            );
+        }
+    }
+
+    @GetMapping(value = "/api/catalog/price/{sellerId}/{min}/{max}")
+    private List<Catalog> retrieveAllSellerCatalogByPrice(@PathVariable("min") BigDecimal min, @PathVariable("max") BigDecimal max, @PathVariable("sellerId") String sellerId){
+        try{
+            return catalogRestService.retrieveRestAllSellerCatalogPrice(UUID.fromString(sellerId), min, max);
+        } catch (NoSuchElementException e){
+            //HttpRequest
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Catalog between price not found"
+            );
+        }
+    }
+
+    @GetMapping(value = "/api/catalog/search/{sellerId}/{search}/price/{min}/{max}")
+    private List<Catalog> retrieveAllSellerCatalogByNameAndPrice(@PathVariable("search") String search, @PathVariable("min") BigDecimal min, @PathVariable("max") BigDecimal max, @PathVariable("sellerId") String sellerId){
+        try{
+            return catalogRestService.retrieveRestAllSellerCatalogContainingAndPrice(UUID.fromString(sellerId), search, min, max);
+        } catch (NoSuchElementException e){
+            //HttpRequest
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Catalog not found"
             );
         }
     }
