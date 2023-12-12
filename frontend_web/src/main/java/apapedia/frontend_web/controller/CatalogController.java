@@ -2,13 +2,7 @@ package apapedia.frontend_web.controller;
 
 import apapedia.frontend_web.dto.request.CreateCatalogRequestDTO;
 import apapedia.frontend_web.service.JwtService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import apapedia.frontend_web.dto.request.UpdateCatalogRequestDTO;
@@ -18,12 +12,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -31,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Locale.Category;
 import java.util.UUID;
 
 @Controller
@@ -392,19 +380,6 @@ public class CatalogController {
         model.addAttribute("catalog", catalog);
         return "catalog-detail";
     }
-
-    private boolean hasRoleSeller(Authentication authentication) {
-        return authentication.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_SELLER"));
-    }
-
-    private String getSellerIdFromCookies(HttpServletRequest request) {
-        String jwt = jwtService.parseJwt(request);
-        String id = jwtService.getIdFromJwtToken(jwt);
-        System.out.println(id);
-        return id;
-    }
-
 
     //-----------------------------------------------------Laura------------------------------------------------------//
 
