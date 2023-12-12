@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import apapedia.user.config.JwtUtils;
-import apapedia.user.DTO.auth.LoginJwtRequest;
-import apapedia.user.DTO.auth.LoginRequest;
-import apapedia.user.DTO.auth.LoginResponse;
-import apapedia.user.DTO.request.UpdateBalanceRequest;
-import apapedia.user.DTO.response.UpdateBalanceResponse;
+import apapedia.user.dto.auth.LoginJwtRequest;
+import apapedia.user.dto.auth.LoginRequest;
+import apapedia.user.dto.auth.LoginResponse;
+import apapedia.user.dto.request.UpdateBalanceRequest;
+import apapedia.user.dto.response.UpdateBalanceResponse;
 import apapedia.user.model.Customer;
 import apapedia.user.model.ERole;
 import apapedia.user.model.Seller;
