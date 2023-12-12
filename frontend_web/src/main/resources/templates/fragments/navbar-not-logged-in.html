@@ -6,8 +6,8 @@
 >
   <head>
     <meta charset="UTF-8" />
-    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
-    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <object th:include="~{fragments/fragment :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/fragment :: css}" th:remove="tag"></object>
     <style>
       .navbar a.nav-link.active {
         color: #007bff; /* Warna teks tautan aktif */
@@ -40,6 +40,18 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+  
+          <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
               th:classappend="${requestPage== 'masuk' ? 'nav-link active' : ''}"
@@ -49,7 +61,7 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Masuk
+              Masukk
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li>
