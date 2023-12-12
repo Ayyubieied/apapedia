@@ -28,27 +28,41 @@
 
             <section id="cards">
                 <div class="row">
-                    <div class="col-md-3">
-                        <h4 class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-black">Filter</span>
-                        </h4>
-                        <ul class="list-group mb-3">
-                            <form class="card p-2" th:action="@{/catalog/name/price}">
-                                <input type="hidden" name="nama" th:value="${searchTerm}">
-                                <label class="form-label text-black"><b>Harga</b></label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text">Rp</span>
-                                    <input type="text" name="min" class="form-control" placeholder="Harga Minimum" th:value="${searchMin}">
+                    <div class="col-md-3" id="filterncat">
+                        <div id="filter">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-black">Filter</span>
+                            </h4>
+                            <ul class="list-group mb-3">
+                                <form class="card p-2" th:action="@{/catalog/name/price}">
+                                    <input type="hidden" name="nama" th:value="${searchTerm}">
+                                    <label class="form-label text-black"><b>Harga</b></label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="text" name="min" class="form-control" placeholder="Harga Minimum" th:value="${searchMin}">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="text" name="max" class="form-control" placeholder="Harga Maksimum" th:value="${searchMax}">
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-outline-primary w-100">Cari</button>
+                                    </div>
+                                </form>
+                            </ul>
+                        </div>
+
+                        <div id="cat">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-black">Category</span>
+                            </h4>
+                            <ul class="list-group">
+                                <div th:if="${listCategory}" th:each="category: ${listCategory}">
+                                    <li class="list-group-item" th:text="${category}"></li>
                                 </div>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text">Rp</span>
-                                    <input type="text" name="max" class="form-control" placeholder="Harga Maksimum" th:value="${searchMax}">
-                                </div>
-                                <div>
-                                    <button type="submit" class="btn btn-outline-primary w-100">Cari</button>
-                                </div>
-                            </form>
-                        </ul>
+                            </ul>
+                        </div>
+
                     </div>
 
                     <div class="col-md-9">

@@ -261,7 +261,13 @@ public class CatalogController {
         System.out.println(url);
 
         List listCatalog = restTemplate.getForObject(url, List.class);
+
+        String urlListCat = "http://localhost:8084/api/category/all";
+        List listCategory = restTemplate.getForObject(urlListCat, List.class);
+
         model.addAttribute("listCatalog", listCatalog);
+        model.addAttribute("listCategory", listCategory);
+
         return "view-catalog";
     }
 
