@@ -1,7 +1,14 @@
 package apapedia.frontend_web.controller;
 
 import apapedia.frontend_web.dto.request.CreateCatalogRequestDTO;
+import apapedia.frontend_web.service.JwtService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import apapedia.frontend_web.dto.request.UpdateCatalogRequestDTO;
@@ -12,17 +19,17 @@ import org.springframework.http.*;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale.Category;
 import java.util.UUID;
@@ -34,6 +41,9 @@ public class CatalogController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private JwtService jwtService;
 
     @GetMapping("/")
     public String viewCatalogPageAll(Model model){
@@ -59,8 +69,8 @@ public class CatalogController {
         return "catalog/view-catalog-all";
     }
 
-    @GetMapping("/catalog")
-    public String viewCatalogPage(Model model){
+    @GetMapping("/catalog/farelver")
+    public String viewCatalogPageFarel(Model model){
         RestTemplate restTemplate = new RestTemplate();
 
         try {
@@ -151,7 +161,7 @@ public class CatalogController {
         return "redirect:/catalog";
     }
 
-    @GetMapping("/catalog/detail/{id}")
+    @GetMapping("/catalog/detail/{id}/farelver")
     public String detailCatalog(@PathVariable(value = "id") UUID catalogId, Model model){
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -238,5 +248,163 @@ public class CatalogController {
 
         return "redirect:/catalog/detail/" + catalogDTO.getId();
     }
+
+    //-----------------------------------------------------Laura------------------------------------------------------//
+
+    @GetMapping("/catalog")
+    public String viewCatalogPage(Model model, HttpSession httpSession) {
+        String jwtToken = (String) httpSession.getAttribute("token");
+        System.out.println(jwtService.getRoleFromJwtToken(jwtToken));
+
+        String url;
+
+        if (jwtService.getRoleFromJwtToken(jwtToken).equals("SELLER")) {
+            String sellerId = jwtService.getIdFromJwtToken(jwtToken);
+            System.out.println(sellerId);
+            if (sellerId != null) {
+                url = "http://localhost:8084/api/catalog/" + sellerId;
+            } else {
+                url = "http://localhost:8084/api/catalog/view-all";
+            }
+        } else {
+            url = "http://localhost:8084/api/catalog/view-all";
+        }
+
+        System.out.println(url);
+
+        List listCatalog = restTemplate.getForObject(url, List.class);
+        model.addAttribute("listCatalog", listCatalog);
+        return "view-catalog";
+    }
+
+    @GetMapping("/catalog/search")
+    public String searchCatalogByName(@RequestParam("nama")String search, RedirectAttributes redirectAttrs, HttpSession httpSession) {
+        String jwtToken = (String) httpSession.getAttribute("token");
+        String url;
+
+        if(search.equals("")){
+            return "redirect:/catalog";
+        }
+
+        if (jwtService.validateJwtToken(jwtToken)) {
+            String sellerId = jwtService.getIdFromJwtToken(jwtToken);
+            if (sellerId != null) {
+                url = "http://localhost:8084/api/catalog/search/" +sellerId+ "/" + search;
+            } else {
+                url = "http://localhost:8084/api/catalog/search/" + search;
+            }
+        } else {
+            url = "http://localhost:8084/api/catalog/search/" + search;
+        }
+
+        System.out.println(url);
+
+        List listCatalog = restTemplate.getForObject(url, List.class);
+
+        redirectAttrs.addFlashAttribute("searchTerm", search);
+        redirectAttrs.addFlashAttribute("listCatalogSearch", listCatalog);
+
+        return "redirect:/catalog";
+    }
+
+    @GetMapping("/catalog/price")
+    public String searchCatalogByPrice(@RequestParam("min") BigDecimal min, @RequestParam("max")BigDecimal max, RedirectAttributes redirectAttrs, HttpSession httpSession) {
+        String jwtToken = (String) httpSession.getAttribute("token");
+        String url;
+
+        if (jwtService.getRoleFromJwtToken(jwtToken).equals("SELLER")) {
+            String sellerId = jwtService.getIdFromJwtToken(jwtToken);
+            System.out.println(sellerId);
+            if (sellerId != null) {
+                url = "http://localhost:8084/api/catalog/" + sellerId + "/" + min + "/" + max;
+            } else {
+                url = "http://localhost:8084/api/catalog/price/" + min + "/" + max;
+            }
+        } else {
+            url = "http://localhost:8084/api/catalog/price/" + min + "/" + max;
+        }
+
+        List listCatalog = restTemplate.getForObject(url, List.class);
+
+        redirectAttrs.addFlashAttribute("listCatalogSearch", listCatalog);
+
+        return "redirect:/catalog";
+    }
+
+    @GetMapping("/catalog/name/price")
+    public String searchCatalogByNameAndPrice(
+            @RequestParam(value = "nama", required = false) String search,
+            @RequestParam(value = "min", required = false) BigDecimal min,
+            @RequestParam(value = "max", required = false) BigDecimal max,
+            RedirectAttributes redirectAttrs, HttpSession httpSession) {
+
+        String jwtToken = (String) httpSession.getAttribute("token");
+        String url;
+
+        if (min == null) {
+            min = BigDecimal.ZERO;
+        }
+        if (max == null) {
+            max = new BigDecimal("999999999");
+        }
+
+        if (jwtService.getRoleFromJwtToken(jwtToken).equals("SELLER")) {
+            String sellerId = jwtService.getIdFromJwtToken(jwtToken);
+            System.out.println(sellerId);
+            if (sellerId != null) {
+                if(search.equals("")){
+                    url = "http://localhost:8084/api/catalog/price/" + sellerId + min + "/" + max;
+                } else {
+                    url = "http://localhost:8084/api/catalog/search/" + sellerId + search + "/price/" + min + "/" + max;
+                }
+            } else {
+                if(search.equals("")){
+                    url = "http://localhost:8084/api/catalog/price/" + min + "/" + max;
+                } else {
+                    url = "http://localhost:8084/api/catalog/search/" + search + "/price/" + min + "/" + max;
+                }
+            }
+        } else {
+            if(search.equals("")){
+                url = "http://localhost:8084/api/catalog/price/" + min + "/" + max;
+            } else {
+                url = "http://localhost:8084/api/catalog/search/" + search + "/price/" + min + "/" + max;
+            }
+        }
+
+        List listCatalog = restTemplate.getForObject(url, List.class);
+        redirectAttrs.addFlashAttribute("listCatalogSearch", listCatalog);
+        redirectAttrs.addFlashAttribute("searchTerm", search);
+        redirectAttrs.addFlashAttribute("searchMin", min);
+        redirectAttrs.addFlashAttribute("searchMax", max);
+
+        return "redirect:/catalog";
+    }
+
+    @GetMapping("/catalog/detail")
+    public String viewDetailCatalog(Model model, @RequestParam("id") UUID id){
+        String url = "http://localhost:8084/api/catalog/detail/" + id.toString();
+        Object catalog = restTemplate.getForObject(url, Object.class);
+        model.addAttribute("catalog", catalog);
+        return "catalog-detail";
+    }
+
+    private boolean hasRoleSeller(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_SELLER"));
+    }
+
+    private String getSellerIdFromCookies(HttpServletRequest request) {
+        String jwt = jwtService.parseJwt(request);
+        String id = jwtService.getIdFromJwtToken(jwt);
+        System.out.println(id);
+        return id;
+    }
+
+
+    //-----------------------------------------------------Laura------------------------------------------------------//
+
+
+
 }
 
