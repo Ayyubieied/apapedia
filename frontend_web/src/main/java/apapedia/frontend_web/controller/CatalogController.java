@@ -45,7 +45,7 @@ public class CatalogController {
     @Autowired
     private JwtService jwtService;
 
-    @GetMapping("/")
+    @GetMapping("/farelver")
     public String viewCatalogPageAll(Model model){
         RestTemplate restTemplate = new RestTemplate();
 
@@ -251,7 +251,7 @@ public class CatalogController {
 
     //-----------------------------------------------------Laura------------------------------------------------------//
 
-    @GetMapping("/catalog")
+    @GetMapping({"/", "/catalog"})
     public String viewCatalogPage(Model model, HttpSession httpSession) {
         String jwtToken = (String) httpSession.getAttribute("token");
         System.out.println(jwtService.getRoleFromJwtToken(jwtToken));

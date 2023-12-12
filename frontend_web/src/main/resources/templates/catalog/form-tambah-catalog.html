@@ -12,6 +12,9 @@
   </head>
 
   <body>
+    <div class="sticky-top">
+      <nav th:replace="~{fragments/navbar-logged-in :: navbar('catalog')}"></nav>
+    </div>
     <!-- Alert -->
     <div
       class="d-flex justify-content-center mt-3"
