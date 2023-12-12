@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import apapedia.catalog.rest.Setting;
@@ -36,6 +38,41 @@ public class CatalogRestServiceImpl implements CatalogRestService{
     @Override
     public List<Catalog> retrieveRestAllCatalogBySellerId(UUID sellerId) {
         return catalogDb.findAllBySellerId(sellerId);
+    }
+
+    @Override
+    public List<Catalog> retrieveRestAllCatalogContaining(String search) {
+        return catalogDb.findAllByProductNameContainingIgnoreCase(search);
+    }
+
+    @Override
+    public List<Catalog> retrieveRestAllCatalogPrice(BigDecimal min, BigDecimal max) {
+        return catalogDb.findByPriceBetween(min, max);
+    }
+
+    @Override
+    public List<Catalog> retrieveRestAllCatalogContainingAndPrice(String search, BigDecimal min, BigDecimal max) {
+        return catalogDb.findByPriceBetweenAndProductNameContainingIgnoreCase(min, max, search);
+    }
+
+    @Override
+    public Optional<Catalog> retrieveRestCatalogById(UUID id) {
+        return catalogDb.findById(id);
+    }
+
+    @Override
+    public List<Catalog> retrieveRestAllSellerCatalogContaining(UUID id, String search) {
+        return catalogDb.findAllBySellerIdAndProductNameContainingIgnoreCase(id, search);
+    }
+
+    @Override
+    public List<Catalog> retrieveRestAllSellerCatalogPrice(UUID id, BigDecimal min, BigDecimal max) {
+        return catalogDb.findAllBySellerIdAndPriceBetween(id, min, max);
+    }
+
+    @Override
+    public List<Catalog> retrieveRestAllSellerCatalogContainingAndPrice(UUID id, String search, BigDecimal min, BigDecimal max) {
+        return catalogDb.findBySellerIdAndPriceBetweenAndProductNameContainingIgnoreCase(id, min, max, search);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package apapedia.user.dto.request;
+package apapedia.user.DTO.request;
 
 import java.time.LocalDateTime;
 

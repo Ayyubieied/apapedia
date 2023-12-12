@@ -1,4 +1,4 @@
-package apapedia.user.dto.request;
+package apapedia.user.DTO.response;
 
 import java.util.UUID;
 
@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateBalanceRequest {
+public class UpdateBalanceResponse {
     private UUID idUser;
     private long money;
+    private long balance;
     private boolean withdrawn;
 }

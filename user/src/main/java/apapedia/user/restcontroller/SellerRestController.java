@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import apapedia.user.dto.UserMapper;
-import apapedia.user.dto.auth.RegisterSellerRequest;
+import apapedia.user.DTO.UserMapper;
+import apapedia.user.DTO.auth.RegisterSellerRequest;
 import apapedia.user.restservice.UserRestService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import apapedia.user.dto.request.UpdateBalanceRequest;
-import apapedia.user.dto.request.UpdateUserRequestDTO;
-import apapedia.user.dto.response.SellerResponse;
-import apapedia.user.dto.response.UpdateBalanceResponse;
+import apapedia.user.DTO.request.UpdateBalanceRequest;
+import apapedia.user.DTO.request.UpdateUserRequestDTO;
+import apapedia.user.DTO.response.SellerResponse;
+import apapedia.user.DTO.response.UpdateBalanceResponse;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

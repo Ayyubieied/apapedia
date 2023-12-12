@@ -1,12 +1,12 @@
-package apapedia.user.dto.response;
+package apapedia.user.DTO.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class SellerResponse extends UserResponseDTO{
-    private String category;
+public class LoginJwtResponse {
+    private String token;
 }
