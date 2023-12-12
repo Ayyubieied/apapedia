@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import apapedia.user.DTO.UserMapper;
-import apapedia.user.DTO.auth.RegisterRequest;
-import apapedia.user.DTO.request.UpdateBalanceRequest;
-import apapedia.user.DTO.request.UpdateUserRequestDTO;
-import apapedia.user.DTO.response.CustomerResponse;
-import apapedia.user.DTO.response.UpdateBalanceResponse;
+import apapedia.user.dto.UserMapper;
+import apapedia.user.dto.auth.RegisterRequest;
+import apapedia.user.dto.request.UpdateBalanceRequest;
+import apapedia.user.dto.request.UpdateUserRequestDTO;
+import apapedia.user.dto.response.CustomerResponse;
+import apapedia.user.dto.response.UpdateBalanceResponse;
 import apapedia.user.restservice.UserRestService;
 import jakarta.validation.Valid;
 
