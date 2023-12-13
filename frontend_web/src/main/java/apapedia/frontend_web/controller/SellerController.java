@@ -69,6 +69,27 @@ public class SellerController {
         return "redirect:/catalog";
     }
 
+    @GetMapping("/profile/{idUser}")
+    public String profileUser(
+                            @PathVariable("idUser") String idUser, 
+                            HttpSession session,
+                            Model model){
+        String jwtToken = (String) session.getAttribute("token");
+
+        var response = this.webClient
+                .get()
+                .uri("http://localhost:8082/api/seller/retrieve/" + idUser)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
+                .retrieve()
+                .bodyToMono(SellerDTO.class);
+        var user = response.block();
+
+        model.addAttribute("user", user);
+        model.addAttribute("idUser", idUser);
+
+        return "profile-page";
+    }
+
     @GetMapping("/withdraw/{idUser}")
     public String withdrawBalanceForm(
                             @PathVariable("idUser") String idUser, 
