@@ -10,7 +10,7 @@
 <nav th:replace="~{fragments/navbar-logged-in :: navbar('catalog')}"></nav>
 <main role="main">
 
-  <div class="album py-5 bg-light">
+  <div class="album bg-light">
     <div class="container">
 
       <section class="py-1 text-center container">
@@ -21,14 +21,14 @@
         </div>
       </section>
 
-      <div class="card mb-1">
-        <div class="row no-gutters">
-          <div class="col-md-4">
-            <img th:src="@{${catalog['imagePath']}}" class="card-img" alt="...">
+      <div class="card">
+        <div class="row justify-content-center">
+          <div class="col-md-5" id="img">
+            <img th:src="@{${catalog['imagePath']}}" class="card-img" alt="..." style="width: 100%; height: auto; object-fit: cover;">
           </div>
-          <div class="col-md-8">
+          <div class="col-md-5" id="desc" style="border-right: 1px solid #ddd">
             <div class="card-body">
-              <h5 class="card-title" th:text="${catalog['productName']}"></h5>
+              <h4 class="card-title" th:text="${catalog['productName']}"></h4>
               <p class="card-text" th:text="${catalog['productDescription']}"></p>
               <h5 th:text="'Rp'+${#numbers.formatDecimal(catalog.price, 0, 'COMMA', 2, 'POINT')}" class="card-title"></h5>
               <p class="card-text">
@@ -37,8 +37,7 @@
                 </svg>
                 tba</p>
               <p>
-                <a href="#" class="btn btn-primary my-2">Buy Now</a>
-                <a href="#" class="btn btn-outline-primary my-2">Add Cart</a>
+                <a th:href="@{/catalog/update/{id}(id=${catalog.id})}" class="btn btn-primary rounded-pill px-3">Edit</a>
               </p>
               <p class="card-text"><small class="text-muted">Last updated tba mins ago</small></p>
             </div>

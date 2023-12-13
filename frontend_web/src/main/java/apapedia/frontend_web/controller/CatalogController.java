@@ -130,7 +130,7 @@ public class CatalogController {
                 imageFile.transferTo(new File(savePath));
 
                 String retrievePath = "/img/CatalogImage/" + filename;
-                catalogDTO.setImage(retrievePath);
+                catalogDTO.setImagePath(retrievePath);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -139,7 +139,7 @@ public class CatalogController {
             }
         }
 
-        catalogDTO.setSeller(UUID.fromString(jwtService.getIdFromJwtToken(jwtToken)));
+        catalogDTO.setSellerId(UUID.fromString(jwtService.getIdFromJwtToken(jwtToken)));
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -188,7 +188,7 @@ public class CatalogController {
         try {
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<UpdateCatalogRequestDTO> catalogResponse = restTemplate.exchange(
-                    URL_API_CATALOG + "/api/catalog/" + catalogId,
+                    URL_API_CATALOG + "/api/catalog/detail/" + catalogId,
                     HttpMethod.GET,
                     null,
                     UpdateCatalogRequestDTO.class
@@ -220,11 +220,33 @@ public class CatalogController {
     }
 
     @PostMapping("/catalog/update")
-    public String updateCatalog(@ModelAttribute UpdateCatalogRequestDTO catalogDTO, RedirectAttributes redirectAttributes) {
+    public String updateCatalog(@ModelAttribute UpdateCatalogRequestDTO catalogDTO, @RequestParam("imageFile") MultipartFile imageFile, RedirectAttributes redirectAttributes) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<CreateCatalogRequestDTO> requestEntity = new HttpEntity(catalogDTO, headers);
+
+        if (!imageFile.isEmpty()) {
+            try {
+                String filename = UUID.randomUUID().toString() + "-" + imageFile.getOriginalFilename();
+                String relativePath = "static/img/CatalogImage/" + filename;
+                File directory = new File(resourceLoader.getResource("classpath:").getURI().getPath());
+                String savePath = new File(directory, relativePath).getAbsolutePath();
+
+                System.out.println("Saving to: " + savePath);
+
+                imageFile.transferTo(new File(savePath));
+
+                String retrievePath = "/img/CatalogImage/" + filename;
+                catalogDTO.setImagePath(retrievePath);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                redirectAttributes.addFlashAttribute("error", "Failed to upload image");
+                return "redirect:/catalog/update";
+            }
+        }
+
 
         try {
             ResponseEntity<ReadCatalogResponseDTO> updatedCatalog = restTemplate.exchange(
@@ -238,28 +260,24 @@ public class CatalogController {
                 redirectAttributes.addFlashAttribute("success", "Berhasil meng-update catalog");
             } else {
                 redirectAttributes.addFlashAttribute("error", updatedCatalog.getBody());
-                return "redirect:/catalog/update/" + catalogDTO.getId();
+                return "redirect:/catalog/detail?id=" + catalogDTO.getId();
             }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/catalog/update/" + catalogDTO.getId();
+            return "redirect:/catalog/detail?id=" + catalogDTO.getId();
         }
 
-        return "redirect:/catalog/detail/" + catalogDTO.getId();
+        return "redirect:/catalog/detail?id=" + catalogDTO.getId();
     }
-
-    //-----------------------------------------------------Laura------------------------------------------------------//
 
     @GetMapping({"/", "/catalog"})
     public String viewCatalogPage(Model model, HttpSession httpSession) {
         String jwtToken = (String) httpSession.getAttribute("token");
-        System.out.println(jwtService.getRoleFromJwtToken(jwtToken));
 
         String url;
 
         if (jwtService.getRoleFromJwtToken(jwtToken).equals("SELLER")) {
             String sellerId = jwtService.getIdFromJwtToken(jwtToken);
-            System.out.println(sellerId);
             if (sellerId != null) {
                 url = "http://localhost:8084/api/catalog/" + sellerId;
             } else {
@@ -319,7 +337,6 @@ public class CatalogController {
 
         if (jwtService.getRoleFromJwtToken(jwtToken).equals("SELLER")) {
             String sellerId = jwtService.getIdFromJwtToken(jwtToken);
-            System.out.println(sellerId);
             if (sellerId != null) {
                 url = "http://localhost:8084/api/catalog/price/" + sellerId + "/" + min + "/" + max;
             } else {
@@ -357,7 +374,6 @@ public class CatalogController {
 
         if (jwtService.getRoleFromJwtToken(jwtToken).equals("SELLER")) {
             String sellerId = jwtService.getIdFromJwtToken(jwtToken);
-            System.out.println(sellerId);
             if (sellerId != null) {
                 if(search.equals("")){
                     url = "http://localhost:8084/api/catalog/price/" + sellerId + "/" + min + "/" + max;
@@ -397,10 +413,6 @@ public class CatalogController {
         model.addAttribute("catalog", catalog);
         return "catalog-detail";
     }
-
-    //-----------------------------------------------------Laura------------------------------------------------------//
-
-
 
 }
 

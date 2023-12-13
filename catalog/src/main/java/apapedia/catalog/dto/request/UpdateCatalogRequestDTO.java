@@ -17,7 +17,7 @@ public class UpdateCatalogRequestDTO {
     @NotNull
     private UUID id;
     @NotNull
-    private UUID seller;
+    private UUID sellerId;
     @NotNull
     @Positive
     private Integer price;
@@ -29,7 +29,7 @@ public class UpdateCatalogRequestDTO {
     private Category category;
     @PositiveOrZero
     @NotNull
-    private Integer stok;
+    private Integer stock;
     @NotNull
-    private String image;
+    private String imagePath;
 }

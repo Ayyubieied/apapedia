@@ -35,6 +35,7 @@ public class CatalogRestController {
 
     @PostMapping("/api/catalog/create-catalog")
     public ResponseEntity createCatalog(@Valid @RequestBody CreateCatalogRequestDTO catalogDTO, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             StringBuilder res = new StringBuilder();
             for (int i = 0; i < bindingResult.getErrorCount(); i++) {
