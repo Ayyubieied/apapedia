@@ -49,7 +49,6 @@ public class AuthController {
                 .header("Authorization", "Bearer " + loginResponse.getJwtToken())
                 .body(loginResponse);
 
-        System.out.println("Sudah logged in ->" + loginResponse.getJwtToken());
         return response;
     }
 
@@ -64,7 +63,6 @@ public class AuthController {
         var response = ResponseEntity.ok()
                 .body(loginResponse);
 
-        System.out.println("Sudah logged in -->"+ response);
         return response;
     }
 

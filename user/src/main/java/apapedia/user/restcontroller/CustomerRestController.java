@@ -79,6 +79,7 @@ public class CustomerRestController {
             throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         }
+        System.out.println("Ini top up request " + topUpRequest.getMoney());
         UpdateBalanceResponse response = userService.updateBalance(topUpRequest);
         return ResponseEntity.ok(response);
     }

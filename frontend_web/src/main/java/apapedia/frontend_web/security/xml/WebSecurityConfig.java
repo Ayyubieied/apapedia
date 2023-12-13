@@ -17,8 +17,8 @@ public class WebSecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/css/**")).hasAuthority("Admin")
                         .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/validate-ticket")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/seller/register")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/seller/register")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/logout-sso")).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -28,7 +28,7 @@ public class WebSecurityConfig {
                         .defaultSuccessUrl("/catalog")
                 )
                 .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login-sso"))
+                .logoutSuccessUrl("/seller/register"))
         ;
         return http.build();
     }

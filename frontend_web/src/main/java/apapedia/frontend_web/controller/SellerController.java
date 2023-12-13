@@ -1,5 +1,6 @@
 package apapedia.frontend_web.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import apapedia.frontend_web.dto.request.CreateUserRequestDTO;
 import apapedia.frontend_web.dto.request.UpdateUserRequestDTO;
 import apapedia.frontend_web.dto.request.WithdrawDTO;
 import apapedia.frontend_web.dto.response.SellerDTO;
+import apapedia.frontend_web.service.JwtService;
 import jakarta.validation.Valid;
 
 import apapedia.frontend_web.dto.request.WithdrawDTO;
@@ -26,6 +28,9 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/seller")
 public class SellerController {
+
+    @Autowired
+    JwtService jwtService;
 
     private final WebClient webClient;
 
@@ -69,23 +74,23 @@ public class SellerController {
         return "redirect:/catalog";
     }
 
-    @GetMapping("/profile/{idUser}")
+    @GetMapping("/profile")
     public String profileUser(
-                            @PathVariable("idUser") String idUser, 
                             HttpSession session,
                             Model model){
         String jwtToken = (String) session.getAttribute("token");
+        String sellerId = jwtService.getIdFromJwtToken(jwtToken);
 
         var response = this.webClient
                 .get()
-                .uri("http://localhost:8082/api/seller/retrieve/" + idUser)
+                .uri("http://localhost:8082/api/seller/retrieve/" + sellerId)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
                 .retrieve()
                 .bodyToMono(SellerDTO.class);
         var user = response.block();
-
+        System.out.println("Ini profile user dari db  " + user.getNameUser());
         model.addAttribute("user", user);
-        model.addAttribute("idUser", idUser);
+        model.addAttribute("idUser", sellerId);
 
         return "profile-page";
     }
@@ -96,6 +101,7 @@ public class SellerController {
                             HttpSession session,
                             Model model){
         String jwtToken = (String) session.getAttribute("token");
+        String sellerId = jwtService.getIdFromJwtToken(jwtToken);
 
         var response = this.webClient
                 .get()
@@ -122,16 +128,17 @@ public class SellerController {
                         Model model){
         withdrawReqDTO.setWithdrawal(-(withdrawReqDTO.getWithdrawal()));
         String jwtToken = (String) session.getAttribute("token");
+        System.out.println("Ini total withdrawalnya " + withdrawReqDTO.getWithdrawal());
 
         var response = this.webClient
-                .post()
+                .put()
                 .uri("http://localhost:8082/api/seller/update-balance")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
                 .bodyValue(withdrawReqDTO)
                 .retrieve()
                 .bodyToMono(WithdrawDTO.class);
         var withdrawDTO = response.block();
-        
+        System.out.println("Ini hasilnya "+withdrawDTO.getWithdrawal());
         model.addAttribute("withdrawDTO", withdrawDTO);
         return "withdraw-balance";
     }

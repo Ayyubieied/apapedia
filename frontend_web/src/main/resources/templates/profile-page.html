@@ -174,49 +174,31 @@
         <div class="row align-items-center flex-row-reverse">
           <div class="col-lg-6">
             <div class="about-text go-to">
-              <h3 class="dark-color">${user.nameUser}</h3>
-              <h6 class="theme-color lead">${user.email}</h6>
-              <p>
-                <mark>d91dca442-8175-11ee-b962-0242ac120002
-              </p>
+              <h3 class="dark-color">
+                <span  th:text="${user.nameUser}"></span>
+              </h3>
+              <h6 class="theme-color lead" th:text="${user.email}"></h6>
               <div class="row about-list">
                 <div class="col-md-6">
                   <div class="media">
                     <label>Address</label>
-                    <p>${user.address}</p>
-                  </div>
-                  <div class="media">
-                    <label>Created</label>
-                    </label>
-                    <p>${user.createdAt}</p>
+                    <p th:text="${user.address}"></p>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="media">
                     <label>E-mail</label>
-                    <p>${user.email}</p>
+                    <p th:text="${user.email}"></p>
                   </div>
-                  <div class="media">
-                    <label>Updated</label>
-                    <p>${user.updatedAt}</p>
-                  </div>
-                </div>
                 <div class="col-md-12">
                   <div class="media">
                     <label>Category</label>
-                    <p>${user.category}</p>
+                    <p th:text="${user.category}"></p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-<<<<<<< HEAD
-        </section>
-      </div>
-    </div>
-  </main>
-</body>
-=======
           <div class="col-lg-6">
             <div class="about-avatar">
               <img src="https://bootdey.com/img/Content/avatar/avatar7.png" title="" alt="">
@@ -247,5 +229,4 @@
       </div>
     </section>
   </body>
->>>>>>> ace1c19900cd1f05d07ab273554e7eb8c3e8da65
 </html>

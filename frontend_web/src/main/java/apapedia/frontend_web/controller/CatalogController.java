@@ -317,11 +317,10 @@ public class CatalogController {
         if (jwtService.getRoleFromJwtToken(jwtToken).equals("SELLER")) {
             String sellerId = jwtService.getIdFromJwtToken(jwtToken);
             if (sellerId != null) {
-                url = "http://localhost:8084/api/catalog/" + sellerId;
+                url = "http://localhost:8084/api/catalog-all/" + sellerId;
                 var listStats = orderService.getStats(sellerId);
 
-                System.out.println("Ini listStats");
-                System.out.println(listStats);
+                model.addAttribute("isSeller", true);
                 model.addAttribute("listStat", listStats);
             } else {
                 url = "http://localhost:8084/api/catalog/view-all";
@@ -337,6 +336,22 @@ public class CatalogController {
         String urlListCat = "http://localhost:8084/api/category/all-name";
         List listCategory = restTemplate.getForObject(urlListCat, List.class);
 
+        model.addAttribute("listCatalog", listCatalog);
+        model.addAttribute("listCategory", listCategory);
+
+        return "view-catalog";
+    }
+
+    @GetMapping("/")
+    public String viewCatalogAll(Model model) {
+        String url = "http://localhost:8084/api/catalog/view-all";
+
+        List listCatalog = restTemplate.getForObject(url, List.class);
+
+        String urlListCat = "http://localhost:8084/api/category/all-name";
+        List listCategory = restTemplate.getForObject(urlListCat, List.class);
+
+        model.addAttribute("isSeller", false);
         model.addAttribute("listCatalog", listCatalog);
         model.addAttribute("listCategory", listCategory);
 

@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
             null,
             new ParameterizedTypeReference<List<StatsDTO>>() {}
         );
-
+        System.out.println(response);
         return response.getBody();
     }
 

@@ -82,8 +82,8 @@ public class SellerRestController {
             throw new ResponseStatusException(
                 HttpStatus.BAD_REQUEST, "Request body has invalid type or missing field");
         }
-        
         UpdateBalanceResponse response = userService.updateBalance(withdrawRequest);
+        System.out.println("Ini user update balance " + response.getMoney());
         return ResponseEntity.ok(response);
     }
     

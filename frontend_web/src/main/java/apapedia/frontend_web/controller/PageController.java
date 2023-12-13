@@ -56,7 +56,11 @@ public class PageController {
         var token = userRestService.getToken(username, name);
 
         if(token == null){
-            return new ModelAndView("redirect:/seller/register");
+            HttpSession httpSession = request.getSession(false);
+            if (httpSession != null) {
+                httpSession.invalidate();
+            }
+            return new ModelAndView("redirect:/logout-sso");
         }
         
         HttpSession httpSession = request.getSession(true);

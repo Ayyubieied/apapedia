@@ -4,16 +4,24 @@
     <meta charset="UTF-8">
     <title>Catalog</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
-       integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
-       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
     <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
     <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 </head>
 <body>
-    <div class="sticky-top">
-        <nav th:replace="~{fragments/navbar-logged-in :: navbar('catalog')}"></nav>
+    <div th:if="${isSeller}">
+        <div class="sticky-top">
+            <nav th:replace="~{fragments/navbar-logged-in :: navbar('catalog')}"></nav>
+        </div>
     </div>
+    <div th:unless="${isSeller}">
+        <div class="sticky-top">
+            <nav th:replace="~{fragments/navbar-not-logged-in :: navbar('catalog')}"></nav>
+        </div>
+    </div>
+    
     <main role="main">
 
         <div class="album bg-light py-2">
@@ -79,7 +87,7 @@
                                         <h4 class="d-flex justify-content-between align-items-center mb-3 py-1">
                                             <span class="text-black">Top 5 This Month</span>
                                         </h4>
-                                        <p class="text-black">Belum ada penjualan</p>
+                                        <canvas class="text-black">Belum ada penjualan</canvas>
                                     </div>
                                 </div>
                             <!-- </div> -->
@@ -172,10 +180,12 @@
     </main>
 
     <script th:inline="javascript">
-        var listProduct = [[${listStats}]];
-        var label = Object.keys(listProduct);
-        var chartData = labels.map(function(key) {
-            return listProduct[key];
+        var listProduct = /*[[${listStat}]]*/ [];
+        var labels = listProduct.map(function(item) {
+            return item.productName; // Adjust this based on your data structure
+        });
+        var chartData = listProduct.map(function(item) {
+            return item.amount; // Adjust this based on your data structure
         });
         var ctx = document.getElementById('horizontalBarChart').getContext('2d');
         var myChart = new Chart(ctx, {
