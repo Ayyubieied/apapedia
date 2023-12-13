@@ -2,6 +2,7 @@ package apapedia.frontend_web.controller;
 
 import apapedia.frontend_web.dto.request.CreateCatalogRequestDTO;
 import apapedia.frontend_web.service.JwtService;
+import apapedia.frontend_web.service.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -45,6 +43,9 @@ public class CatalogController {
 
     @Autowired
     private ResourceLoader resourceLoader;
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/farelver")
     public String viewCatalogPageAll(Model model){
@@ -276,16 +277,50 @@ public class CatalogController {
         return "redirect:/catalog/detail?id=" + catalogDTO.getId();
     }
 
-    @GetMapping({"/", "/catalog"})
+    // @GetMapping({"/", "/catalog"})
+    // public String viewCatalogPage(Model model, HttpSession httpSession) {
+    //     String jwtToken = (String) httpSession.getAttribute("token");
+
+    //     String url;
+
+    //     if (jwtService.getRoleFromJwtToken(jwtToken).equals("SELLER")) {
+    //         String sellerId = jwtService.getIdFromJwtToken(jwtToken);
+    //         if (sellerId != null) {
+    //             url = "http://localhost:8084/api/catalog/" + sellerId;
+    //         } else {
+    //             url = "http://localhost:8084/api/catalog/view-all";
+    //         }
+    //     } else {
+    //         url = "http://localhost:8084/api/catalog/view-all";
+    //     }
+
+    //     System.out.println(url);
+
+    //     List listCatalog = restTemplate.getForObject(url, List.class);
+
+    //     String urlListCat = "http://localhost:8084/api/category/all-name";
+    //     List listCategory = restTemplate.getForObject(urlListCat, List.class);
+
+    //     model.addAttribute("listCatalog", listCatalog);
+    //     model.addAttribute("listCategory", listCategory);
+
+    //     return "view-catalog";
+    // }
+
+    // punya ayyubie
+    @GetMapping("/catalog")
     public String viewCatalogPage(Model model, HttpSession httpSession) {
         String jwtToken = (String) httpSession.getAttribute("token");
 
-        String url;
+        String url, urlGraph;
 
         if (jwtService.getRoleFromJwtToken(jwtToken).equals("SELLER")) {
             String sellerId = jwtService.getIdFromJwtToken(jwtToken);
             if (sellerId != null) {
                 url = "http://localhost:8084/api/catalog/" + sellerId;
+                var listStats = orderService.getStats(sellerId);
+
+                model.addAttribute("listStats", listStats);
             } else {
                 url = "http://localhost:8084/api/catalog/view-all";
             }

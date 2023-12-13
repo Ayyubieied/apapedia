@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface OrderItemDb extends JpaRepository<OrderItem, UUID> {
     List<OrderItem> findAll();
 
-    List<OrderItem> findByProductName(String productName);
+    // List<OrderItem> findByProductName(Integer productName);
 
     List<OrderItem> findByOrderId(Order orderId);
 }

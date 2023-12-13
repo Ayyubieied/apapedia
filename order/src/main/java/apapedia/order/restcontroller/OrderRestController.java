@@ -46,7 +46,7 @@ public class OrderRestController {
         Order order = orderDb.findById(orderId).get();
         return ResponseEntity.ok(orderService.findByOrder(order));
     }
-
+    
     @PutMapping("/{orderId}")
     public ResponseEntity<String> updateOrderStatus(@RequestBody UpdateOrderDto updateOrderDto, @PathVariable("orderId") UUID orderId) {
         orderService.updateOrder(orderId, updateOrderDto);
