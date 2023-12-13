@@ -12,7 +12,7 @@
 </div>
 <main role="main">
 
-    <div class="album py-5 bg-light">
+    <div class="album bg-light">
         <div class="container">
 
             <section class="py-1 text-center container">
@@ -20,7 +20,7 @@
                     <div class="col-lg-6 col-md-8 mx-auto">
                         <h1>All Catalog</h1>
                         <p>
-                            <a href="#" class="btn btn-primary my-2">Add Catalog</a>
+                            <a th:href="@{/catalog/tambah}" class="btn btn-primary my-2">Add Catalog</a>
                         </p>
                     </div>
                 </div>
@@ -28,27 +28,41 @@
 
             <section id="cards">
                 <div class="row">
-                    <div class="col-md-3">
-                        <h4 class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-black">Filter</span>
-                        </h4>
-                        <ul class="list-group mb-3">
-                            <form class="card p-2" th:action="@{/catalog/name/price}">
-                                <input type="hidden" name="nama" th:value="${searchTerm}">
-                                <label class="form-label text-black"><b>Harga</b></label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text">Rp</span>
-                                    <input type="text" name="min" class="form-control" placeholder="Harga Minimum" th:value="${searchMin}">
+                    <div class="col-md-3" id="filterncat">
+                        <div id="filter">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-black">Filter</span>
+                            </h4>
+                            <ul class="list-group mb-3">
+                                <form class="card p-2" th:action="@{/catalog/name/price}">
+                                    <input type="hidden" name="nama" th:value="${searchTerm}">
+                                    <label class="form-label text-black"><b>Harga</b></label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="text" name="min" class="form-control" placeholder="Harga Minimum" th:value="${searchMin}">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="text" name="max" class="form-control" placeholder="Harga Maksimum" th:value="${searchMax}">
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-outline-primary w-100">Cari</button>
+                                    </div>
+                                </form>
+                            </ul>
+                        </div>
+
+                        <div id="cat">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-black">Category</span>
+                            </h4>
+                            <ul class="list-group">
+                                <div th:if="${listCategory}" th:each="category: ${listCategory}">
+                                    <li class="list-group-item" th:text="${category}"></li>
                                 </div>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text">Rp</span>
-                                    <input type="text" name="max" class="form-control" placeholder="Harga Maksimum" th:value="${searchMax}">
-                                </div>
-                                <div>
-                                    <button type="submit" class="btn btn-outline-primary w-100">Cari</button>
-                                </div>
-                            </form>
-                        </ul>
+                            </ul>
+                        </div>
+
                     </div>
 
                     <div class="col-md-9">
@@ -63,9 +77,9 @@
                                             <img th:src="@{${catalog.imagePath}}" class="card-img-top" alt="...">
                                             <a th:href="@{/catalog/detail(id=${catalog.id})}" class="stretched-link"></a>
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body" style="border-top: 1px solid #ddd">
                                             <p th:text="${catalog.productName}" class="card-text" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden"></p>
-                                            <h5 th:text="'Rp'+${catalog.price}" class="card-title"></h5>
+                                            <h5 th:text="'Rp'+${#numbers.formatDecimal(catalog.price, 0, 'COMMA', 2, 'POINT')}" class="card-title"></h5>
                                             <p class="card-text">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16">
                                                     <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/>
@@ -75,9 +89,9 @@
                                                 <div class="btn-group">
                                                     <form th:action="@{/catalog/detail}" method="get">
                                                         <input type="hidden" name="id" th:value="${catalog.id}">
-                                                        <button type="submit" class="btn btn-sm btn-outline-primary">Detail</button>
+                                                        <button th:href="@{/catalog/detail(id=${catalog.id})}" type="submit" class="btn btn-sm btn-outline-primary">Detail</button>
                                                     </form>
-                                                    <a th:href="@{/catalog/detail}" type="button" class="btn btn-sm btn-outline-primary">Edit</a>
+                                                    <a th:href="@{/catalog/update/{id}(id=${catalog.id})}" type="button" class="btn btn-sm btn-outline-primary">Edit</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -92,9 +106,9 @@
                                             <a th:href="@{/catalog/detail(id=${catalog.id})}" class="stretched-link"></a>
 
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body" style="border-top: 1px solid #ddd">
                                             <p th:text="${catalog.productName}" class="card-text" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden"></p>
-                                            <h5 th:text="'Rp'+${catalog.price}" class="card-title"></h5>
+                                            <h5 th:text="'Rp'+${#numbers.formatDecimal(catalog.price, 0, 'COMMA', 2, 'POINT')}" class="card-title"></h5>
                                             <p class="card-text">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16">
                                                     <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/>
@@ -104,9 +118,9 @@
                                                 <div class="btn-group">
                                                     <form th:action="@{/catalog/detail}" method="get">
                                                         <input type="hidden" name="id" th:value="${catalog.id}">
-                                                        <button class="btn btn-sm btn-outline-primary" type="submit">Detail</button>
+                                                        <button th:href="@{/catalog/detail(id=${catalog.id})}" class="btn btn-sm btn-outline-primary" type="submit">Detail</button>
                                                     </form>
-                                                    <a th:href="@{/catalog/detail}" type="button" class="btn btn-sm btn-outline-primary">Edit</a>
+                                                    <a th:href="@{/catalog/update/{id}(id=${catalog.id})}" type="button" class="btn btn-sm btn-outline-primary">Edit</a>
                                                 </div>
                                             </div>
                                         </div>

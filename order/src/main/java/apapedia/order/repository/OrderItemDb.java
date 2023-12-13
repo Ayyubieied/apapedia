@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import apapedia.order.model.Order;
 import apapedia.order.model.OrderItem;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface OrderItemDb extends JpaRepository<OrderItem, UUID> {
     List<OrderItem> findAll();
 
+    List<OrderItem> findByProductName(String productName);
+
+    List<OrderItem> findByOrderId(Order orderId);
 }

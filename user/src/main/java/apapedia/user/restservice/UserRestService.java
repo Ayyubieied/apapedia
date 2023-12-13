@@ -54,6 +54,9 @@ public class UserRestService {
 
     public LoginResponse login(LoginRequest request){
         var user = userDb.findByUsername(request.getUsername());
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + request.getUsername());
+        }
         Authentication authentication = authManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 request.getUsername(), 

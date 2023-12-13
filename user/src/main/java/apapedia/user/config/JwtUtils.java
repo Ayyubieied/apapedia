@@ -18,27 +18,30 @@ import io.jsonwebtoken.UnsupportedJwtException;
 @Component
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-    public static final String jwtSecret = System.getenv("JWT_SECRET");
+    public static final String jwtSecret = "OI4OVNONVONI2H3R238R92381983R919";
     public static final String jwtExpirationMs = System.getenv("JWT_EXPIRATION_MS");
 
     public String generateJwtToken(UserApapedia user){
-        return Jwts.builder()
+        System.out.println(jwtSecret);
+        String jwt = Jwts.builder()
                 .setSubject(user.getUsername())
                 .claim("id", user.getIdUser())
                 .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS512, "OI4OVNONVONI2H3R238R92381983R919")
                 .compact();
+        System.out.println(jwt);
+        return jwt;
     }
 
     public String getUserNameFromJwtToken(String token){
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey("OI4OVNONVONI2H3R238R92381983R919").parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(String authToken){
         try{
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey("OI4OVNONVONI2H3R238R92381983R919").parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
             logger.error(("Invalid JWT Signature: {}"), e.getMessage());

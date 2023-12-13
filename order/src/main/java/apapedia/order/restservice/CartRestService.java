@@ -1,6 +1,5 @@
 package apapedia.order.restservice;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class CartRestService {
     }
 
     public List<Cart> getAllCart() {
-        return cartDb.findAll(); 
+        return cartDb.findAll();
     }
 
     public Cart updateRestCart(Cart cartDTO) {

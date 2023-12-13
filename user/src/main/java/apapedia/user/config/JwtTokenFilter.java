@@ -2,6 +2,7 @@ package apapedia.user.config;
 
 import java.io.IOException;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 authenticationToken.setDetails(new WebAuthenticationDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
+        } catch (ExpiredJwtException e) {
+            logger.error("JWT token is expired: {}", e.getMessage());
+            response.sendRedirect("/login-sso");
+            return;
         } catch (Exception e){
             logger.error("cannot set user authentication: {}",(Object) e);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
