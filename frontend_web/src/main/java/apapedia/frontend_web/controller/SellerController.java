@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import apapedia.frontend_web.dto.auth.LoginRequest;
 import apapedia.frontend_web.dto.auth.LoginResponse;
 import apapedia.frontend_web.dto.request.CreateUserRequestDTO;
+import apapedia.frontend_web.dto.request.UpdateUserRequestDTO;
 import apapedia.frontend_web.dto.request.WithdrawDTO;
 import apapedia.frontend_web.dto.response.SellerDTO;
 import jakarta.validation.Valid;
@@ -114,15 +115,49 @@ public class SellerController {
         return "withdraw-balance";
     }
 
-    @GetMapping("/edit")
-    public String formEditSeller(Model model){
-        var userDTO = new CreateUserRequestDTO();
+    @GetMapping("/edit/{idUser}")
+    public String formEditSeller(
+                            @PathVariable("idUser") String idUser, 
+                            HttpSession session,
+                            Model model){
+        String jwtToken = (String) session.getAttribute("token");
+
+        var response = this.webClient
+                .get()
+                .uri("http://localhost:8082/api/seller/retrieve/" + idUser)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
+                .retrieve()
+                .bodyToMono(SellerDTO.class);
+        var user = response.block();
+
+        var userDTO = new UpdateUserRequestDTO();
+        userDTO.setIdUser(user.getIdUser());
+
         model.addAttribute("userDTO", userDTO);
+        model.addAttribute("idUser", idUser);
+
         return "edit-seller-page";
     }
 
-    @PostMapping("/edit")
-    public String editSeller() {
+    @PostMapping("/edit/{idUser}")
+    public String editSeller(
+                            @PathVariable("idUser") String idUser, 
+                            HttpSession session,
+                            @Valid @ModelAttribute UpdateUserRequestDTO userDTO,
+                            Model model){
+        String jwtToken = (String) session.getAttribute("token");
+
+        var response = this.webClient
+                .post()
+                .uri("http://localhost:8082/api/seller/edit/" + idUser)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
+                .bodyValue(userDTO)
+                .retrieve()
+                .bodyToMono(SellerDTO.class);
+        var user = response.block();
+
+        model.addAttribute("userDTO", userDTO);
+        model.addAttribute("idUser", idUser);
         return "success-edit-seller";
     }
 }

@@ -13,6 +13,6 @@ import java.util.UUID;
 @Data
 
 public class CreateCartRequestDTO {
-    private Integer totalPrice;
+    // private Integer totalPrice;
     private List<CartItem> listCartItem;
 }

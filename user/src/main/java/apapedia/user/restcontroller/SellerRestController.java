@@ -3,6 +3,7 @@ package apapedia.user.restcontroller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 // import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import apapedia.user.dto.UserMapper;
 import apapedia.user.dto.auth.RegisterSellerRequest;
@@ -39,6 +41,9 @@ public class SellerRestController {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     @PostMapping("/create")
     public ResponseEntity<SellerResponse> createSeller(@Valid @RequestBody RegisterSellerRequest sellerDTO, BindingResult bindingResult){
@@ -94,6 +99,7 @@ public class SellerRestController {
             seller.setUpdatedAt(LocalDateTime.now());
             seller.setCreatedAt(sellerFromDto.getCreatedAt());
             userService.updateRestSeller(seller);
+            seller.setPassword(encoder.encode(seller.getPassword()));
             var sellerResponse = userMapper.sellerToSellerResponseDTO(seller);
             return ResponseEntity.ok(sellerResponse);
         }

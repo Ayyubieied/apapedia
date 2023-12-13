@@ -70,17 +70,12 @@ public class CartRestService {
         cartItemDb.save(cartItem);
     }
 
-    public UUID retrieveCartId(UUID idUser){
-        String url = "http://localhost:8082/api/customer/retrieve/" + idUser.toString();
-        ResponseEntity<CustomerResponseDTO> response = restTemplate.exchange(
-            url,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<CustomerResponseDTO>() {}
-        );
-        return response.getBody().getCartId();
+    public String extractToken(String authorizationHeader) {
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7); // Skip "Bearer "
+        }
+        return null;
     }
-
     
 
 }

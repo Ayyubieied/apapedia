@@ -33,7 +33,7 @@ public interface CatalogMapper {
     CatalogResponseDTO catalogToCatalogResponseDTO(Catalog catalog);
 
     @AfterMapping
-    default void fillCategoryResponse(@MappingTarget Catalog catalog, CatalogResponseDTO catalogResponseDTO, @Context CategoryDb categoryDb){
+    default void fillCategoryResponse(@MappingTarget CatalogResponseDTO catalogResponseDTO, Catalog catalog){
         catalogResponseDTO.setCategory(catalog.getCategory().getIdCategory());
     }
 

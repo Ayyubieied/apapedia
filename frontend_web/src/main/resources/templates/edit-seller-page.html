@@ -5,11 +5,7 @@
   <meta charset="UTF-8" />
   <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
   <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
-<<<<<<< HEAD
-  <title>Edit Seller Page</title>
-=======
   <title>Edit Seller Profile Page</title>
->>>>>>> origin/main
 </head>
 
 <body>
@@ -25,7 +21,7 @@
               <span th:text="${error.defaultMessage}"></span>
             </li>
           </ul> -->
-          <form th:action="@{/seller/edit}" th:object="${userDTO}" method="POST">
+          <form th:action="@{/seller/edit/{idUser}(idUser=${idUser})}" th:object="${userDTO}" method="POST">
             Nama: <br>
             <input class="form-control" type="text" th:field="*{nameUser}" />
             <br><br>
@@ -48,10 +44,7 @@
 
             <button class="btn btn-primary" type="submit">Save</button>
             <a class="btn btn-danger" href="javascript:history.back()">Cancel</a>
-<<<<<<< HEAD
-=======
           </form>
->>>>>>> origin/main
         </div>
       </div>
     </div>
