@@ -54,6 +54,9 @@ public class UserRestService {
 
     public LoginResponse login(LoginRequest request){
         var user = userDb.findByUsername(request.getUsername());
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + request.getUsername());
+        }
         Authentication authentication = authManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 request.getUsername(), 
@@ -81,6 +84,10 @@ public class UserRestService {
 
     public UserApapedia findByUsername(String username){
         return userDb.findByUsername(username);
+    }
+
+    public Customer getCustomerByUsername(String username){
+        return customerDb.findByUsername(username);
     }
 
     public void createRestSeller(Seller seller){
@@ -127,10 +134,10 @@ public class UserRestService {
     public Seller updateRestSeller(Seller sellerDTO) {
         Seller seller = getSeller(sellerDTO.getIdUser());
         if (seller != null){
-            if (!seller.getPassword().equals(sellerDTO.getPassword())) {
+            if (!encoder.matches(sellerDTO.getPassword(), seller.getPassword())) {
                 seller.setNameUser(sellerDTO.getNameUser());
                 seller.setUsername(sellerDTO.getUsername());
-                seller.setPassword(sellerDTO.getPassword());
+                seller.setPassword(encoder.encode(sellerDTO.getPassword()));
                 seller.setEmail(sellerDTO.getEmail());
                 seller.setAddress(sellerDTO.getAddress());
                 seller.setCreatedAt(sellerDTO.getCreatedAt());
@@ -150,10 +157,10 @@ public class UserRestService {
     public Customer updateRestCustomer(Customer customerDTO) {
         Customer customer = getCustomer(customerDTO.getIdUser());
         if (customer != null) {
-            if (!customer.getPassword().equals(customerDTO.getPassword())) {
+            if (!encoder.matches(customerDTO.getPassword(), customer.getPassword())) {
                 customer.setNameUser(customerDTO.getNameUser());
                 customer.setUsername(customerDTO.getUsername());
-                customer.setPassword(customerDTO.getPassword());
+                customer.setPassword(encoder.encode(customerDTO.getPassword()));
                 customer.setEmail(customerDTO.getEmail());
                 customer.setAddress(customerDTO.getAddress());
                 customer.setCreatedAt(customerDTO.getCreatedAt());

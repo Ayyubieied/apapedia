@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
-    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <object th:include="~{fragments/fragment :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/fragment :: css}" th:remove="tag"></object>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -174,8 +174,8 @@
         <div class="row align-items-center flex-row-reverse">
           <div class="col-lg-6">
             <div class="about-text go-to">
-              <h3 class="dark-color">Muhammad Fauzan Rizky Ramadhan </h3>
-              <h6 class="theme-color lead">@Fauzan_rizky</h6>
+              <h3 class="dark-color">${user.nameUser}</h3>
+              <h6 class="theme-color lead">${user.email}</h6>
               <p>
                 <mark>d91dca442-8175-11ee-b962-0242ac120002
               </p>
@@ -183,33 +183,40 @@
                 <div class="col-md-6">
                   <div class="media">
                     <label>Address</label>
-                    <p>jakarta, Indonesia</p>
+                    <p>${user.address}</p>
                   </div>
                   <div class="media">
                     <label>Created</label>
                     </label>
-                    <p>20/10/2023</p>
+                    <p>${user.createdAt}</p>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="media">
                     <label>E-mail</label>
-                    <p>fauzan@gmail.com</p>
+                    <p>${user.email}</p>
                   </div>
                   <div class="media">
                     <label>Updated</label>
-                    <p>10/11/2023</p>
+                    <p>${user.updatedAt}</p>
                   </div>
                 </div>
                 <div class="col-md-12">
                   <div class="media">
                     <label>Category</label>
-                    <p>Official Store</p>
+                    <p>${user.category}</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+<<<<<<< HEAD
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+=======
           <div class="col-lg-6">
             <div class="about-avatar">
               <img src="https://bootdey.com/img/Content/avatar/avatar7.png" title="" alt="">
@@ -222,17 +229,17 @@
           <div class="row">
             <div class="col-6 col-lg-4">
               <div class="count-data text-center">
-                <a type="button" class="btn btn-md btn-primary" href="/">Withdraw </a>
+                <a type="button" class="btn btn-md btn-primary" th:href="@{/seller/withdraw/{idUser}(idUser=${idUser})}">Withdraw </a>
               </div>
             </div>
             <div class="col-6 col-lg-4">
               <div class="count-data text-center">
-                <a type="button" class="btn btn-md btn-primary" href="/">Edit Profile </a>
+                <a type="button" class="btn btn-md btn-primary" th:href="@{/seller/edit/{idUser}(idUser=${idUser})}">Edit Profile </a>
               </div>
             </div>
             <div class="col-6 col-lg-4">
               <div class="count-data text-center">
-                <a type="button" class="btn btn-md btn-danger" href="/">Logout </a>
+                <a type="button" class="btn btn-md btn-danger" href="/logout-sso">Logout </a>
               </div>
             </div>
           </div>
@@ -240,4 +247,5 @@
       </div>
     </section>
   </body>
+>>>>>>> ace1c19900cd1f05d07ab273554e7eb8c3e8da65
 </html>

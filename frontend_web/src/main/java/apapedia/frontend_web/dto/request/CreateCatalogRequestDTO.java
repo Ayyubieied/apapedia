@@ -25,9 +25,9 @@ public class CreateCatalogRequestDTO {
     private UUID category;
     @PositiveOrZero
     @NotNull
-    private Integer stok;
+    private Integer stock;
     @NotNull
-    private String image;
+    private String imagePath;
 
-    private UUID seller;
+    private UUID sellerId;
 }

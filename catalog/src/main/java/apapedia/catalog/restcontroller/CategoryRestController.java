@@ -13,6 +13,15 @@ public class CategoryRestController {
     @Autowired
     CategoryRestService categoryRestService;
 
+    @GetMapping("/api/category/all-name")
+    public ResponseEntity<?> getAllCategoryName() {
+        try {
+            return new ResponseEntity<>(categoryRestService.getAllCategoryName(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/api/category/all")
     public ResponseEntity<?> getAllCategory() {
         try {
@@ -21,4 +30,5 @@ public class CategoryRestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
 }

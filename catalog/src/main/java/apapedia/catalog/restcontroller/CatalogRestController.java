@@ -13,12 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import apapedia.catalog.model.Catalog;
 import apapedia.catalog.repository.CategoryDb;
-import apapedia.catalog.restservice.CatalogRestService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -39,6 +35,7 @@ public class CatalogRestController {
 
     @PostMapping("/api/catalog/create-catalog")
     public ResponseEntity createCatalog(@Valid @RequestBody CreateCatalogRequestDTO catalogDTO, BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             StringBuilder res = new StringBuilder();
             for (int i = 0; i < bindingResult.getErrorCount(); i++) {
@@ -119,7 +116,7 @@ public class CatalogRestController {
         return catalogRestService.retrieveRestAllCatalog();
     }
 
-    @GetMapping(value = "/api/catalog/{sellerId}")
+    @GetMapping(value = "/api/catalog-all/{sellerId}")
     private List<Catalog> retrieveAllCatalogBySellerId(@PathVariable("sellerId") String sellerId){
         try{
             return catalogRestService.retrieveRestAllCatalogBySellerId(UUID.fromString(sellerId));

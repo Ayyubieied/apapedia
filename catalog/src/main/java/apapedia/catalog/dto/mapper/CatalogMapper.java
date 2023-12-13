@@ -16,9 +16,6 @@ import org.mapstruct.MappingTarget;
 public interface CatalogMapper {
 
     @Mapping(target = "category", ignore = true)
-    @Mapping(source="seller", target = "sellerId")
-    @Mapping(source="image", target = "imagePath")
-    @Mapping(source="stok", target = "stock")
     Catalog createCatalogRequestDTOToCatalog(CreateCatalogRequestDTO createCatalogRequestDTO, @Context CategoryDb categoryDb);
 
     @AfterMapping
@@ -27,19 +24,13 @@ public interface CatalogMapper {
     }
 
     @Mapping(target = "category", ignore = true)
-    @Mapping(source="sellerId", target = "seller")
-    @Mapping(source="imagePath", target = "image")
-    @Mapping(source="stock", target = "stok")
     CatalogResponseDTO catalogToCatalogResponseDTO(Catalog catalog);
 
     @AfterMapping
-    default void fillCategoryResponse(@MappingTarget Catalog catalog, CatalogResponseDTO catalogResponseDTO, @Context CategoryDb categoryDb){
+    default void fillCategoryResponse(@MappingTarget CatalogResponseDTO catalogResponseDTO, Catalog catalog){
         catalogResponseDTO.setCategory(catalog.getCategory().getIdCategory());
     }
 
     @Mapping(target = "deleted", ignore = true)
-    @Mapping(source="seller", target = "sellerId")
-    @Mapping(source="image", target = "imagePath")
-    @Mapping(source="stok", target = "stock")
     Catalog updateCatalogRequestDTOToCatalog(UpdateCatalogRequestDTO updateCatalogRequestDTO);
 }

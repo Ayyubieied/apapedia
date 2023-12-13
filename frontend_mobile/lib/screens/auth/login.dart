@@ -49,6 +49,23 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     print('Token is saved to shared preferences.');
   }
 
+  Future<String?> getCurrentUserId() async {
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    String? jwtToken = sharedPref.getString('jwtToken');
+
+    if (jwtToken != null) {
+      // Decode the JWT token and extract the user ID
+      final List<String> parts = jwtToken.split('.');
+      if (parts.length == 3) {
+        final Map<String, dynamic> payload = json.decode(
+          utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))),
+        );
+        return payload['idUser'];
+      }
+    }
+    return null;
+  }
+
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -178,6 +195,12 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                                         final Map<String?, dynamic> data = json.decode(response.body);
                                         String jwtToken = data['jwtToken'];
                                         saveData(jwtToken);
+                                        String? userId = await getCurrentUserId();
+                                        if (userId != null) {
+                                          print('User ID: $userId');
+                                        } else {
+                                          print('Failed to retrieve user ID from token.');
+                                        }
                                         Navigator.push(
                                             context, MaterialPageRoute(builder: (context) => const ViewCatalogScreen()));
                                             // context, MaterialPageRoute(builder: (context) => const TopUpFormScreen()));

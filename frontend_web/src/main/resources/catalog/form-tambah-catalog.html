@@ -1,62 +1,114 @@
 <!DOCTYPE html>
-<html 
-lang="en" 
-xmlns="http://www.w3.org/1999/xhtml" 
-xmlns:th="http://thymeleaf.org">
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://thymeleaf.org"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:insert="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>Tambah Catalog</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
-  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
-  <title>Form Tambah Catalog</title>
-</head>
+  <body>
+    <!-- Alert -->
+    <div
+      class="d-flex justify-content-center mt-3"
+      th:if="${error != null || success != null}"
+    >
+      <div
+        class="toast show rounded"
+        th:classappend="${success != null} ? 'bg-primary' : 'bg-danger'"
+      >
+        <div class="toast-header gap-3">
+          <span class="bi bi-info-circle mr-2" aria-hidden="true"></span>
+          <strong
+            class="me-auto"
+            th:utext="${success != null} ? ${success} : ${error}"
+          >
+          </strong>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
 
-<body>
-<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div class="container mt-5">
+      <div class="card mb-2">
+        <div class="card-header d-flex justify-content-center">
+          <h3 class="fw-bold">Tambah Produk</h3>
+        </div>
 
-  <div class="container">
-    <div class="card m-4 p-4">
-      <div class="card-body">
-        <div class="justify-content-center">
-          <h2>Tambah Catalog </h2>
-          <br>
-          <form th:action="@{/catalog/tambah}" th:object="${catalogDTO}" method="POST">
-            
-            Foto Catalog: <br>
-            <input required class="form-control" type="file" th:field="*{fotoCatalog}" accept="image/*" />
-            <br><br>
+        <div class="px-5 py-2">
+          <form
+            th:action="@{/catalog/tambah}"
+            th:object="${catalogDTO}"
+            method="POST"
+          >
+            Nama Produk <br />
+            <input
+              class="form-control"
+              type="text"
+              th:field="*{productName}"
+              placeholder="Nama Produk"
+            />
+            <br />
 
-            Nama Catalog: <br>
-            <input required class ="form-control" type="text" th:field="*{namaCatalog}" />
-            <br><br>
+            Kategori Produk
+            <select th:field="*{category}" class="form-control" required>
+              <div th:each="category1: ${categories}">
+                <option
+                  th:value="${category1.id}"
+                  th:text="${category1.name}"
+                ></option>
+              </div>
+            </select>
+            <br />
 
-            Kategori Catalog: <br>
-            <select th:field="*{kategoriCatalog}" class="form-control">
-                <option th:value="1">Kategori 1</option>
-                <option th:value="2">Kategori 2</option>
-                <option th:value="3">Kategori 3</option>
-                <option th:value="4">Kategori 4</option>
-                <option th:value="5">Kategori 5</option>
-              </select>
-              <br><br>
+            Deskripsi Produk<br />
+            <textarea
+              class="form-control"
+              type="text"
+              th:field="*{productDescription}"
+              placeholder="Tuliskan deskripsi produk..."
+            ></textarea>
+            <br />
 
-            Deskripsi Catalog: <br>
-            <input required class="form-control" type="text" th:field="*{deskripsiCatalog}" />
-            <br><br>
+            Harga Produk<br />
+            <input
+              class="form-control"
+              type="number"
+              th:field="*{price}"
+              placeholder="Rp 0"
+            />
+            <br />
 
-            Stok Catalog: <br>
-            <input required class="form-control" type="number" th:field="*{stokCatalog}" />
-            <br><br>
+            Stok<br />
+            <input
+              class="form-control"
+              type="number"
+              th:field="*{stok}"
+              placeholder="0"
+            />
+            <br />
 
-            Harga Catalog: <br>
-            <input required class="form-control" type="number" th:field="*{hargaCatalog}" />
-            <br><br>
+            Image Url <br />
+            <input class="form-control" type="text" th:field="*{image}" />
+            <br />
 
-            <button class="btn btn-primary" type="submit">Submit</button>
+            <div class="d-flex justify-content-center gap-3">
+              <a th:href="@{/catalog}" type="button" class="btn btn-danger"
+                >Batal</a
+              >
+              <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
           </form>
         </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

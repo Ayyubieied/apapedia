@@ -3,6 +3,7 @@ package apapedia.user.restcontroller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 // import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import apapedia.user.dto.UserMapper;
 import apapedia.user.dto.auth.RegisterRequest;
@@ -37,6 +39,9 @@ public class CustomerRestController {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     @PostMapping("/create")
     public ResponseEntity<CustomerResponse> createSeller(@Valid @RequestBody RegisterRequest customerDTO, BindingResult bindingResult){
         if(bindingResult.hasFieldErrors()){
@@ -54,6 +59,14 @@ public class CustomerRestController {
     // @PreAuthorize("hasAuthority('ROLE_CUSTOMER')") 
     public ResponseEntity<CustomerResponse> retrieveCustomer(@PathVariable("idUser") UUID idCustomer){
         var customer = userService.getCustomer(idCustomer);
+        var customerResponse = userMapper.customerToCustomerResponseDTO(customer);
+        return ResponseEntity.ok(customerResponse);
+    }
+
+    @GetMapping("/retrieve-by-username/{username}")
+    // @PreAuthorize("hasAuthority('ROLE_CUSTOMER')") 
+    public ResponseEntity<CustomerResponse> retrieveCustomerByUsername(@PathVariable("username") String username){
+        var customer = userService.getCustomerByUsername(username);
         var customerResponse = userMapper.customerToCustomerResponseDTO(customer);
         return ResponseEntity.ok(customerResponse);
     }
@@ -82,6 +95,7 @@ public class CustomerRestController {
             customer.setCreatedAt(customerFromDto.getCreatedAt());
             customer.setCartId(customerFromDto.getCartId());
             userService.updateRestCustomer(customer);
+            customer.setPassword(encoder.encode(customer.getPassword()));
             var customerResponse = userMapper.customerToCustomerResponseDTO(customer);
             return ResponseEntity.ok(customerResponse);
         }

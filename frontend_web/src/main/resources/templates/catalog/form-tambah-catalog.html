@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<html
-  lang="en"
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://thymeleaf.org"
->
+<html  lang="en"  xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <object th:insert="~{fragments/common :: js}" th:remove="tag"></object>
@@ -12,27 +8,16 @@
   </head>
 
   <body>
+    <div class="sticky-top">
+      <nav th:replace="~{fragments/navbar-logged-in :: navbar('catalog')}"></nav>
+    </div>
     <!-- Alert -->
-    <div
-      class="d-flex justify-content-center mt-3"
-      th:if="${error != null || success != null}"
-    >
-      <div
-        class="toast show rounded"
-        th:classappend="${success != null} ? 'bg-primary' : 'bg-danger'"
-      >
+    <div class="d-flex justify-content-center mt-3" th:if="${error != null || success != null}">
+      <div class="toast show rounded" th:classappend="${success != null} ? 'bg-primary' : 'bg-danger'">
         <div class="toast-header gap-3">
           <span class="bi bi-info-circle mr-2" aria-hidden="true"></span>
-          <strong
-            class="me-auto"
-            th:utext="${success != null} ? ${success} : ${error}"
-          >
-          </strong>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="toast"
-          ></button>
+          <strong class="me-auto" th:utext="${success != null} ? ${success} : ${error}"></strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
         </div>
       </div>
     </div>
@@ -44,66 +29,33 @@
         </div>
 
         <div class="px-5 py-2">
-          <form
-            th:action="@{/catalog/tambah}"
-            th:object="${catalogDTO}"
-            method="POST"
-          >
-            Nama Produk <br />
-            <input
-              class="form-control"
-              type="text"
-              th:field="*{productName}"
-              placeholder="Nama Produk"
-            />
-            <br />
+          <form th:action="@{/catalog/tambah}" th:object="${catalogDTO}" method="POST" enctype="multipart/form-data">
+            <br/>Nama Produk
+            <input class="form-control" type="text" th:field="*{productName}" placeholder="Nama Produk"/>
 
-            Kategori Produk
+            <br/>Kategori Produk
             <select th:field="*{category}" class="form-control" required>
-              <div th:each="category1: ${categories}">
-                <option
-                  th:value="${category1.id}"
-                  th:text="${category1.name}"
-                ></option>
-              </div>
+              <option th:each="category1 : ${categories}"
+                      th:value="${category1.id}"
+                      th:text="${category1.name}">
+              </option>
             </select>
-            <br />
 
-            Deskripsi Produk<br />
-            <textarea
-              class="form-control"
-              type="text"
-              th:field="*{productDescription}"
-              placeholder="Tuliskan deskripsi produk..."
-            ></textarea>
-            <br />
+            <br />Deskripsi Produk
+            <textarea class="form-control" type="text" th:field="*{productDescription}" placeholder="Tuliskan deskripsi produk..."></textarea>
 
-            Harga Produk<br />
-            <input
-              class="form-control"
-              type="number"
-              th:field="*{price}"
-              placeholder="Rp 0"
-            />
-            <br />
+            <br />Harga Produk
+            <input class="form-control" type="number" th:field="*{price}" placeholder="Rp 0" />
 
-            Stok<br />
-            <input
-              class="form-control"
-              type="number"
-              th:field="*{stok}"
-              placeholder="0"
-            />
-            <br />
+            <br />Stok
+            <input class="form-control" type="number" th:field="*{stock}" placeholder="0" />
 
-            Image Url <br />
-            <input class="form-control" type="text" th:field="*{image}" />
-            <br />
+            <br />Image
+            <input class="form-control" type="file" id="formFile" name="imageFile">
 
+            <br />
             <div class="d-flex justify-content-center gap-3">
-              <a th:href="@{/catalog}" type="button" class="btn btn-danger"
-                >Batal</a
-              >
+              <a th:href="@{/catalog}" type="button" class="btn btn-danger" >Batal</a>
               <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
           </form>

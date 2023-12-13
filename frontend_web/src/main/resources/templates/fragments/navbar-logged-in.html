@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
-  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <object th:include="~{fragments/fragment :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/fragment :: css}" th:remove="tag"></object>
   <style>
     .navbar a.nav-link.active {
       color: #007bff; /* Warna teks tautan aktif */
@@ -18,7 +18,7 @@
 <body>
 <nav th:fragment="navbar(requestPage)" class="navbar navbar-expand-lg navbar-dark bg-primary ">
   <div class="container-md">
-    <a class="navbar-brand navbar-dark bg-primary fw-bold text-light" href="/">APAPEDIA</a>
+    <a class="navbar-brand navbar-dark bg-primary fw-bold text-light" th:href="@{/catalog}">APAPEDIA</a>
     <button
             class="navbar-toggler"
             type="button"
@@ -36,7 +36,7 @@
           <a  class="nav-link" th:classappend="${requestPage== 'catalog' ? 'nav-link active' : ''}" th:href="@{/catalog}">Catalog</a>
         </li>
         <li class="nav-item">
-          <a  class="nav-link" th:classappend="${requestPage== 'order' ? 'nav-link active' : ''}" th:href="@{/order}">Order History</a>
+          <a  class="nav-link" th:classappend="${requestPage== 'order' ? 'nav-link active' : ''}" th:href="@{/order/seller}">Order History</a>
         </li>
         <li class="nav-item">
           <a  class="nav-link" th:classappend="${requestPage== 'profile' ? 'nav-link active' : ''}" th:href="@{/profile}">Profile</a>

@@ -10,7 +10,6 @@ import apapedia.user.dto.request.CreateUserRequestDTO;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-
 public class UpdateUserRequestDTO extends CreateUserRequestDTO {
     private UUID idUser;
 }

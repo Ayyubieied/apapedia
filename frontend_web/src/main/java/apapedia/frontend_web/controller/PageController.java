@@ -76,5 +76,11 @@ public class PageController {
     public ModelAndView logoutSSO(Principal principal){
         return new ModelAndView("redirect:" + Setting.SERVER_LOGOUT + Setting.CLIENT_LOGOUT);
     }
+
+    @GetMapping("/profile")
+    public String viewProfile(){
+        return "profile-page";
+    }
+
 }
 

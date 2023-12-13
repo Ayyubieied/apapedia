@@ -7,17 +7,15 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RequestCallback;
-import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 import apapedia.frontend_web.dto.response.OrderDTO;
+import apapedia.frontend_web.dto.response.StatsDTO;
 import apapedia.frontend_web.dto.response.StatsDTO;
 
 @Service
 public class OrderServiceImpl implements OrderService {
     private RestTemplate restTemplate = new RestTemplate();
-    
     @Override
     public List<OrderDTO> getSellerOrder(UUID userId) {
         String url = "http://localhost:8083/api/order/seller/" + userId.toString();
