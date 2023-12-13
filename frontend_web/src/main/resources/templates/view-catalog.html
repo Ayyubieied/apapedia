@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Catalog</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"
+       integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA=="
+       crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
     <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 </head>
 <body>
     <div class="sticky-top">
@@ -13,19 +16,27 @@
     </div>
     <main role="main">
 
-        <div class="album bg-light">
+        <div class="album bg-light py-2">
             <div class="container">
 
-                <section class="py-1 text-center container">
-                    <div class="row py-lg-5">
-                        <div class="col-lg-6 col-md-8 mx-auto">
-                            <h1>All Catalog</h1>
-                            <p>
-                                <a th:href="@{/catalog/tambah}" class="btn btn-primary my-2">Add Catalog</a>
-                            </p>
+                <div th:if="${isSeller}">
+                    <section class="py-1 text-center container">
+                        <div class="row py-lg-5">
+                            <div class="col-lg-6 col-md-8 mx-auto">
+                                <h1>All Catalog</h1>
+                                <p>
+                                    <a th:href="@{/catalog/tambah}" class="btn btn-primary my-2">Add Catalog</a>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
+                <div th:unless="${isSeller}">
+                    <section class="py-1 container">
+                        <br>
+                        <br>
+                    </section>
+                </div>
 
                 <section id="cards">
                     <div class="row">
@@ -53,30 +64,25 @@
                                 </ul>
                             </div>
 
-                            <div th:if="${listStat}">
-                                <div id="stats" style="border-top: 1px solid #ddd" class="py-2">
-                                    <h4 class="d-flex justify-content-between align-items-center mb-3 py-1">
-                                        <span class="text-black">Top 5 This Month</span>
-                                    </h4>
-                                    <canvas id="horizontalBarChart" style="max-width: 600px; margin: auto;"></canvas>
-                                    <ol class="list-group list-group-numbered" id="ranking">
-                                        <li class="list-group-item fw-bold" >Converse</li>
-                                        <li class="list-group-item fw-bold" >Nike</li>
-                                        <li class="list-group-item fw-bold" >Zara</li>
-                                        <li class="list-group-item fw-bold" >Adidas</li>
-                                        <li class="list-group-item fw-bold" >Toblerone</li>
-                                    </ol>
+                            <!-- <div th:if="${isSeller}"> -->
+                                <div th:if="${listStat}">
+                                    <div id="stats" style="border-top: 1px solid #ddd" class="py-2">
+                                        <h4 class="d-flex justify-content-between align-items-center mb-3 py-1">
+                                            <span class="text-black">Top 5 This Month</span>
+                                        </h4>
+                                        <canvas id="horizontalBarChart" style="max-width: 600px; margin: auto;"></canvas>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div th:unless="${listStat}">
-                                <div id="nostats" style="border-top: 1px solid #ddd" class="py-2">
-                                    <h4 class="d-flex justify-content-between align-items-center mb-3 py-1">
-                                        <span class="text-black">Top 5 This Month</span>
-                                    </h4>
-                                    <p class="text-black">Belum ada penjualan</p>
+                                <div th:unless="${listStat}">
+                                    <div id="nostats" style="border-top: 1px solid #ddd" class="py-2">
+                                        <h4 class="d-flex justify-content-between align-items-center mb-3 py-1">
+                                            <span class="text-black">Top 5 This Month</span>
+                                        </h4>
+                                        <p class="text-black">Belum ada penjualan</p>
+                                    </div>
                                 </div>
-                            </div>
+                            <!-- </div> -->
 
                             <div id="cat" style="border-top: 1px solid #ddd" class="py-2">
                                 <h4 class="d-flex justify-content-between align-items-center mb-3 py-2">
@@ -98,7 +104,7 @@
                             <div class="row row-cols-2 row-cols-md-4">
                                 <div th:if="${listCatalogSearch}" th:each="catalog: ${listCatalogSearch}">
                                     <div class="col mb-2">
-                                        <div class="card h-80">
+                                        <div class="card h-100">
                                             <div class="position-relative">
                                                 <img th:src="@{${catalog.imagePath}}" class="card-img-top" alt="...">
                                                 <a th:href="@{/catalog/detail(id=${catalog.id})}" class="stretched-link"></a>
@@ -117,7 +123,9 @@
                                                             <input type="hidden" name="id" th:value="${catalog.id}">
                                                             <button th:href="@{/catalog/detail(id=${catalog.id})}" type="submit" class="btn btn-sm btn-outline-primary">Detail</button>
                                                         </form>
-                                                        <a th:href="@{/catalog/update/{id}(id=${catalog.id})}" type="button" class="btn btn-sm btn-outline-primary">Edit</a>
+                                                        <div th:if="${isSeller}">
+                                                            <a th:href="@{/catalog/update/{id}(id=${catalog.id})}" type="button" class="btn btn-sm btn-outline-primary">Edit</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -126,7 +134,7 @@
                                 </div>
                                 <div th:unless="${listCatalogSearch}" th:each="catalog: ${listCatalog}">
                                     <div class="col mb-2">
-                                        <div class="card h-80">
+                                        <div class="card h-100">
                                             <div class="position-relative">
                                                 <img th:src="@{${catalog.imagePath}}" class="card-img-top" alt="...">
                                                 <a th:href="@{/catalog/detail(id=${catalog.id})}" class="stretched-link"></a>
@@ -146,7 +154,9 @@
                                                             <input type="hidden" name="id" th:value="${catalog.id}">
                                                             <button th:href="@{/catalog/detail(id=${catalog.id})}" class="btn btn-sm btn-outline-primary" type="submit">Detail</button>
                                                         </form>
-                                                        <a th:href="@{/catalog/update/{id}(id=${catalog.id})}" type="button" class="btn btn-sm btn-outline-primary">Edit</a>
+                                                        <div th:if="${isSeller}">
+                                                            <a th:href="@{/catalog/update/{id}(id=${catalog.id})}" type="button" class="btn btn-sm btn-outline-primary">Edit</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

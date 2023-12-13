@@ -50,10 +50,16 @@ public class OrderRestServiceImpl implements OrderRestService {
     }
 
     @Override
-    public void updateOrder(UUID orderId, UpdateOrderDto updateOrderDto) {
-        Order order = orderDb.findById(orderId).get();
-        order.setStatus(updateOrderDto.getStatus());
+    public Order updateOrder(UUID orderId) {
+    Order order = orderDb.findById(orderId).get();
+    Integer status = order.getStatus();
+
+        if (status != 5){
+            order.setStatus(status + 1);
+        }
+        
         orderDb.save(order);
+        return order;
     }
 
     @Override

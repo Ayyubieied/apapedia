@@ -48,9 +48,9 @@ public class OrderRestController {
     }
     
     @PutMapping("/{orderId}")
-    public ResponseEntity<String> updateOrderStatus(@RequestBody UpdateOrderDto updateOrderDto, @PathVariable("orderId") UUID orderId) {
-        orderService.updateOrder(orderId, updateOrderDto);
-        return ResponseEntity.ok("Status successfully updated");
+    public ResponseEntity<Order> updateOrderStatus(@PathVariable("orderId") UUID orderId) {
+        var order = orderService.updateOrder(orderId);
+        return ResponseEntity.ok(order);
     }
 
     @GetMapping("/seller/{userId}/stats")

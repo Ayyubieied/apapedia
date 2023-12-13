@@ -13,7 +13,7 @@ public interface OrderRestService {
 
     void createOrder(List<CreateOrderDto> createOrderDto, UUID userId);
 
-    void updateOrder(UUID orderId, UpdateOrderDto updateOrderDto);
+    public Order updateOrder(UUID orderId);
 
     List<Order> getCustomerOrder(UUID userId);
 

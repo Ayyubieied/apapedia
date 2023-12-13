@@ -320,7 +320,9 @@ public class CatalogController {
                 url = "http://localhost:8084/api/catalog/" + sellerId;
                 var listStats = orderService.getStats(sellerId);
 
-                model.addAttribute("listStats", listStats);
+                System.out.println("Ini listStats");
+                System.out.println(listStats);
+                model.addAttribute("listStat", listStats);
             } else {
                 url = "http://localhost:8084/api/catalog/view-all";
             }
