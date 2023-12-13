@@ -1,4 +1,4 @@
-package apapedia.order.DTO.response;
+package apapedia.order.dto.response;
 
 import java.util.Date;
 import java.util.List;

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
 import apapedia.frontend_web.service.OrderService;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,17 +39,10 @@ public class OrderController {
         return "order-history-page";
     }
 
-    @GetMapping("order/seller/update/{orderId}")
-    public String updateSellerOrder(@PathVariable("orderId") UUID orderId, Integer status, Model model){
-        var listOrder = orderService.updateOrder(orderId, status); 
-        return "";
+    @GetMapping("/order/{orderId}")
+    public String updateOrder(@PathVariable("orderId") UUID orderId, Model model){
+        var response = orderService.updateOrder(orderId);
+
+        return "redirect:/order/seller/" + response.getSeller();
     }
-    
-    // @PutMapping("/api/order/{orderId}")
-    // public String updateOrder(@RequestBody UpdateOrderDto updateOrderDto, @PathVariable("orderId") UUID orderId){
-    //     var order = orderService.getOrderById(orderId);
-    //     return "";
-    // }
-
-
 }

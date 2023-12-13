@@ -1,13 +1,13 @@
-package apapedia.user.DTO;
+package apapedia.user.dto;
 
 import org.mapstruct.Mapper;
 
-import apapedia.user.DTO.response.UserResponseDTO;
-import apapedia.user.DTO.auth.RegisterRequest;
-import apapedia.user.DTO.auth.RegisterSellerRequest;
-import apapedia.user.DTO.request.*;
-import apapedia.user.DTO.response.CustomerResponse;
-import apapedia.user.DTO.response.SellerResponse;
+import apapedia.user.dto.auth.RegisterRequest;
+import apapedia.user.dto.auth.RegisterSellerRequest;
+import apapedia.user.dto.request.*;
+import apapedia.user.dto.response.CustomerResponse;
+import apapedia.user.dto.response.SellerResponse;
+import apapedia.user.dto.response.UserResponseDTO;
 import apapedia.user.model.Customer;
 import apapedia.user.model.Seller;
 import apapedia.user.model.UserApapedia;

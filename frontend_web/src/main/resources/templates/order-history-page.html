@@ -36,7 +36,7 @@
                     <td th:text="${barang.totalPrice}"></td>
                     <td th:text="${barang.status}"></td>
                     <td>
-                        <a type="button" class="btn btn-md btn-secondary" th:href="@{/}">Detail</a> 
+                        <a type="button" class="btn btn-md btn-secondary" th:href="@{/order/{orderId}(orderId=${barang.id})}">Detail</a> 
                     </td>
                 </tr>
                 <!-- <tr>

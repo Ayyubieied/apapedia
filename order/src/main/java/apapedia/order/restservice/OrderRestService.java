@@ -3,9 +3,8 @@ package apapedia.order.restservice;
 import java.util.List;
 import java.util.UUID;
 
-import apapedia.order.DTO.request.CreateOrderDto;
-import apapedia.order.DTO.request.StatsDto;
-import apapedia.order.DTO.request.UpdateOrderDto;
+import apapedia.order.dto.request.CreateOrderDto;
+import apapedia.order.dto.request.StatsDto;
 import apapedia.order.model.Order;
 import apapedia.order.model.OrderItem;
 
@@ -13,7 +12,7 @@ public interface OrderRestService {
 
     void createOrder(List<CreateOrderDto> createOrderDto, UUID userId);
 
-    void updateOrder(UUID orderId, UpdateOrderDto updateOrderDto);
+    Order updateOrder(UUID orderId);
 
     List<Order> getCustomerOrder(UUID userId);
 

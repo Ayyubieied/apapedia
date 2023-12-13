@@ -1,8 +1,8 @@
-package apapedia.order.DTO;
+package apapedia.order.dto;
 
-import apapedia.order.DTO.request.CreateOrderDto;
-import apapedia.order.DTO.request.UpdateOrderDto;
-import apapedia.order.DTO.response.OrderResponseDTO;
+import apapedia.order.dto.request.CreateOrderDto;
+import apapedia.order.dto.request.UpdateOrderDto;
+import apapedia.order.dto.response.OrderResponseDTO;
 import apapedia.order.model.Order;
 
 public interface OrderMapper {

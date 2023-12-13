@@ -12,6 +12,7 @@ import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 import apapedia.frontend_web.dto.response.OrderDTO;
+import apapedia.frontend_web.dto.response.StatsDTO;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -26,26 +27,31 @@ public class OrderServiceImpl implements OrderService {
             null,
             new ParameterizedTypeReference<List<OrderDTO>>() {}
         );
-        // if (!response.getStatusCode().is2xxSuccessful()) {
-        //     // Log error details
-        //     logger.error("Error in API response. Status code: {}", response.getStatusCode());
-        //     logger.error("Raw response body: {}", response.getBody());
-        //     throw new RuntimeException("Error in API response");
-        // }
+
+        return response.getBody();
+    }
+
+    @Override
+    public OrderDTO updateOrder(UUID orderId) {
+        String url = "http://localhost:8083/api/order/" + orderId.toString();
+        ResponseEntity<OrderDTO> response = restTemplate.exchange(
+            url,
+            HttpMethod.PUT,
+            null,
+            new ParameterizedTypeReference<OrderDTO>() {}
+        );
     
         return response.getBody();
     }
-    
+
     @Override
-    public String updateOrder(UUID orderId, Integer status) {
-        String url = "http://localhost:8083/api/order/" + orderId.toString();
-        RequestCallback requestCallback = restTemplate.httpEntityCallback("status=" + status);
-        ResponseExtractor<ResponseEntity<String>> responseExtractor = restTemplate.responseEntityExtractor(String.class);
-        ResponseEntity<String> response = restTemplate.execute(
+    public List<StatsDTO> getStats(String userId) {
+        String url = "http://localhost:8083/api/order/seller/" + userId + "/stats";
+        ResponseEntity<List<StatsDTO>> response = restTemplate.exchange(
             url,
-            HttpMethod.PUT,
-            requestCallback,
-            responseExtractor
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<List<StatsDTO>>() {}
         );
 
         return response.getBody();

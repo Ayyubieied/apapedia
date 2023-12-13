@@ -1,13 +1,11 @@
 package apapedia.order.restservice;
 
 import java.util.*;
-import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import apapedia.order.DTO.request.CreateOrderDto;
-import apapedia.order.DTO.request.StatsDto;
-import apapedia.order.DTO.request.UpdateOrderDto;
+import apapedia.order.dto.request.CreateOrderDto;
+import apapedia.order.dto.request.StatsDto;
 import apapedia.order.model.Order;
 import apapedia.order.model.OrderItem;
 import apapedia.order.repository.OrderDb;
@@ -26,6 +24,7 @@ public class OrderRestServiceImpl implements OrderRestService {
     @Override
     public void createOrder(List<CreateOrderDto> createOrderDto, UUID userId) {
         Map<UUID, Order> sellerOrders = new HashMap<>();
+        
 
         for (CreateOrderDto orderItem : createOrderDto) {
             OrderItem item = new OrderItem();
@@ -50,10 +49,16 @@ public class OrderRestServiceImpl implements OrderRestService {
     }
 
     @Override
-    public void updateOrder(UUID orderId, UpdateOrderDto updateOrderDto) {
-        Order order = orderDb.findById(orderId).get();
-        order.setStatus(updateOrderDto.getStatus());
+    public Order updateOrder(UUID orderId) {
+    Order order = orderDb.findById(orderId).get();
+    Integer status = order.getStatus();
+
+        if (status != 5){
+            order.setStatus(status + 1);
+        }
+        
         orderDb.save(order);
+        return order;
     }
 
     @Override

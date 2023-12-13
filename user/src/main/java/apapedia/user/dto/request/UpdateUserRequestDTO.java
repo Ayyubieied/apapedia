@@ -1,10 +1,11 @@
-package apapedia.user.DTO.request;
+package apapedia.user.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.UUID;
-import apapedia.user.DTO.request.CreateUserRequestDTO;
+
+import apapedia.user.dto.request.CreateUserRequestDTO;
 
 @AllArgsConstructor
 @NoArgsConstructor
