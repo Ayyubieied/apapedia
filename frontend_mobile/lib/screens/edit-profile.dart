@@ -2,10 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend_mobile/screens/auth/register.dart';
-import 'package:frontend_mobile/screens/top-up.dart';
 import 'package:frontend_mobile/screens/view-catalog.dart';
 import 'package:frontend_mobile/utils/color_palette.dart';
 import 'package:http/http.dart' as http;
@@ -14,15 +11,15 @@ import 'package:frontend_mobile/components/drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:jejakarbon_flutter/apps/homepage/homePage.dart';
 
-class LoginFormScreen extends StatefulWidget{
-  static const routeName = '/login';
-  const LoginFormScreen({super.key});
+class EditProfileFormScreen extends StatefulWidget{
+  static const routeName = '/edit-profile';
+  const EditProfileFormScreen({super.key});
 
   @override
-  State<LoginFormScreen> createState() => _LoginFormScreenState();
+  State<EditProfileFormScreen> createState() => _EditProfileFormScreenState();
 }
 
-class _LoginFormScreenState extends State<LoginFormScreen> {
+class _EditProfileFormScreenState extends State<EditProfileFormScreen> {
   final _formKey = GlobalKey<FormState>();
 
   bool isPasswordVisible = false;
@@ -49,25 +46,11 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
     print('Token is saved to shared preferences.');
   }
 
-  Future<String?> getCurrentUserId() async {
-    SharedPreferences sharedPref = await SharedPreferences.getInstance();
-    String? jwtToken = sharedPref.getString('jwtToken');
-
-    if (jwtToken != null) {
-      // Decode the JWT token and extract the user ID
-      final List<String> parts = jwtToken.split('.');
-      if (parts.length == 3) {
-        final Map<String, dynamic> payload = json.decode(
-          utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))),
-        );
-        return payload['idUser'];
-      }
-    }
-    return null;
-  }
-
+  TextEditingController nameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
   @override
   void dispose() {
@@ -98,10 +81,6 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Icon(
-                    Icons.android,
-                    size: 100,
-                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -117,7 +96,7 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text("Hello, Login to Explore!",
+                        const Text("Edit Profile",
                             style: TextStyle(
                               fontSize: 24,
                             )),
@@ -136,6 +115,26 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                                     width:
                                     MediaQuery.of(context).size.width * 0.8,
                                     child: TextFormField(
+                                      controller: nameController,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        labelText: "Name",
+                                      ),
+                                      validator: (String? value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Masukkan nama anda';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                    width:
+                                    MediaQuery.of(context).size.width * 0.8,
+                                    child: TextFormField(
                                       controller: usernameController,
                                       decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
@@ -144,6 +143,46 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                                       validator: (String? value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Masukkan username anda';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                    width:
+                                    MediaQuery.of(context).size.width * 0.8,
+                                    child: TextFormField(
+                                      controller: emailController,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        labelText: "E-mail",
+                                      ),
+                                      validator: (String? value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Masukkan e-mail anda';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                    width:
+                                    MediaQuery.of(context).size.width * 0.8,
+                                    child: TextFormField(
+                                      controller: addressController,
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        labelText: "Address",
+                                      ),
+                                      validator: (String? value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Masukkan address anda';
                                         }
                                         return null;
                                       },
@@ -181,36 +220,44 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                                       ),
                                     ),
                                     onPressed: () async {
-                                      final response = await http.post(
-                                          Uri.parse("http://10.0.2.2:8082/api/authentication/login"),
+                                      final response = await http.put(
+                                          Uri.parse("http://10.0.2.2:8082/api/customer/edit/d0efc38f-8c2f-4aae-8455-8f5dbf0a1c07"),
                                           headers: {
                                             'Content-Type': 'application/json', // Set the content type to JSON
                                           },
                                           body: jsonEncode({
+                                            "nameUser": nameController.text,
                                             "username": usernameController.text,
+                                            "email": emailController.text,
+                                            "address": addressController.text,
                                             "password":passwordController.text}
                                           )
                                       );
                                       if(response.statusCode == 200) {
-                                        final Map<String?, dynamic> data = json.decode(response.body);
-                                        String jwtToken = data['jwtToken'];
-                                        saveData(jwtToken);
-                                        String? userId = await getCurrentUserId();
-                                        if (userId != null) {
-                                          print('User ID: $userId');
-                                        } else {
-                                          print('Failed to retrieve user ID from token.');
+                                        final response = await http.post(
+                                            Uri.parse("http://10.0.2.2:8082/api/authentication/login"),
+                                            headers: {
+                                              'Content-Type': 'application/json', // Set the content type to JSON
+                                            },
+                                            body: jsonEncode({
+                                              "username": usernameController.text,
+                                              "password":passwordController.text}
+                                            )
+                                        );
+                                        if(response.statusCode == 200) {
+                                          final Map<String?, dynamic> data = json.decode(response.body);
+                                          String jwtToken = data['jwtToken'];
+                                          saveData(jwtToken);
+                                          Navigator.push(
+                                              context, MaterialPageRoute(builder: (context) => const ViewCatalogScreen()));
                                         }
-                                        Navigator.push(
-                                            context, MaterialPageRoute(builder: (context) => const ViewCatalogScreen()));
-                                            // context, MaterialPageRoute(builder: (context) => const TopUpFormScreen()));
                                       } else {
-                                        print("gagal login");
+                                        print(response.body);
                                       }
 
                                     },
                                     child: const Text(
-                                      'Login',
+                                      'Save',
                                       style: TextStyle(
                                           fontSize: 20,
                                           color: Colors.black
@@ -223,29 +270,6 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                         )
                       ],
                     ),
-                  ),
-                  RichText(
-                      text: TextSpan(
-                        text: 'Belum punya akun? ',
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Register',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.blue
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(
-                                    context, MaterialPageRoute(builder: (context) => const RegisterFormScreen()));
-                              }
-                          )
-                        ]
-                      )
                   )
                 ],
               ),

@@ -116,7 +116,7 @@ public class CatalogRestController {
         return catalogRestService.retrieveRestAllCatalog();
     }
 
-    @GetMapping(value = "/api/catalog/{sellerId}")
+    @GetMapping(value = "/api/catalog-all/{sellerId}")
     private List<Catalog> retrieveAllCatalogBySellerId(@PathVariable("sellerId") String sellerId){
         try{
             return catalogRestService.retrieveRestAllCatalogBySellerId(UUID.fromString(sellerId));

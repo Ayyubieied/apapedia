@@ -86,6 +86,10 @@ public class UserRestService {
         return userDb.findByUsername(username);
     }
 
+    public Customer getCustomerByUsername(String username){
+        return customerDb.findByUsername(username);
+    }
+
     public void createRestSeller(Seller seller){
         seller.setPassword(encoder.encode(seller.getPassword()));
         seller.setCreatedAt(LocalDateTime.now());
@@ -130,10 +134,10 @@ public class UserRestService {
     public Seller updateRestSeller(Seller sellerDTO) {
         Seller seller = getSeller(sellerDTO.getIdUser());
         if (seller != null){
-            if (!seller.getPassword().equals(sellerDTO.getPassword())) {
+            if (!encoder.matches(sellerDTO.getPassword(), seller.getPassword())) {
                 seller.setNameUser(sellerDTO.getNameUser());
                 seller.setUsername(sellerDTO.getUsername());
-                seller.setPassword(sellerDTO.getPassword());
+                seller.setPassword(encoder.encode(sellerDTO.getPassword()));
                 seller.setEmail(sellerDTO.getEmail());
                 seller.setAddress(sellerDTO.getAddress());
                 seller.setCreatedAt(sellerDTO.getCreatedAt());
@@ -153,10 +157,10 @@ public class UserRestService {
     public Customer updateRestCustomer(Customer customerDTO) {
         Customer customer = getCustomer(customerDTO.getIdUser());
         if (customer != null) {
-            if (!customer.getPassword().equals(customerDTO.getPassword())) {
+            if (!encoder.matches(customerDTO.getPassword(), customer.getPassword())) {
                 customer.setNameUser(customerDTO.getNameUser());
                 customer.setUsername(customerDTO.getUsername());
-                customer.setPassword(customerDTO.getPassword());
+                customer.setPassword(encoder.encode(customerDTO.getPassword()));
                 customer.setEmail(customerDTO.getEmail());
                 customer.setAddress(customerDTO.getAddress());
                 customer.setCreatedAt(customerDTO.getCreatedAt());

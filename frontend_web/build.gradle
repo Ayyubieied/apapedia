@@ -33,7 +33,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
-	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api-parent:4.0.0'
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	testImplementation("org.springframework.security:spring-security-test")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("com.google.guava:guava:31.1-jre")
+    implementation("com.cloudinary:cloudinary-http44:1.5.0")
+    implementation("io.micrometer:micrometer-registry-prometheus")
 	implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.2'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
