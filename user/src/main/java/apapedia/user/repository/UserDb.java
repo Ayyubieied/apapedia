@@ -6,12 +6,12 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import apapedia.user.model.User;
+import apapedia.user.model.UserApapedia;
 import jakarta.transaction.Transactional;
 
 @Repository
-@Transactional
-public interface UserDb extends JpaRepository<User,UUID>{
-    Optional<User> findByUsername(String username);
-    User findByIdUser(UUID uuid);
+public interface UserDb extends JpaRepository<UserApapedia,UUID>{
+    // Optional<User> findByUsername(String username);
+    UserApapedia findByUsername(String username);
+    UserApapedia findByIdUser(UUID uuid);
 }

@@ -12,5 +12,5 @@ import jakarta.transaction.Transactional;
 @Transactional
 public interface CustomerDb extends JpaRepository<Customer,UUID>{
     Customer findCustomerByIdUser(UUID id);
-    
+    Customer findByUsername(String username);
 }

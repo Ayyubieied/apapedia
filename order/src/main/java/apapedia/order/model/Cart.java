@@ -21,7 +21,7 @@ import java.util.UUID;
 public class Cart {
     @Id
     @Column(name = "cart_id", nullable = false)
-    private UUID cartId = UUID.randomUUID();
+    private UUID cartId;
 
     @NotNull
     @Column(name = "total_price", nullable = false)

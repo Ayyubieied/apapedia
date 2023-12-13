@@ -10,18 +10,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.http.HttpHeaders;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 import apapedia.order.model.CartItem;
-import apapedia.order.DTO.CartMapper;
-import apapedia.order.DTO.request.CreateCartRequestDTO;
-import apapedia.order.DTO.request.CreateCartItemRequestDTO;
-import apapedia.order.DTO.request.UpdateCartRequestDTO;
-import apapedia.order.DTO.request.UpdateCartItemRequestDTO;
-import apapedia.order.DTO.response.CartResponseDTO;
+import apapedia.order.model.Cart;
+import apapedia.order.dto.CartMapper;
+import apapedia.order.dto.request.CreateCartRequestDTO;
+import apapedia.order.dto.request.CreateCartItemRequestDTO;
+import apapedia.order.dto.request.UpdateCartRequestDTO;
+import apapedia.order.dto.request.UpdateCartItemRequestDTO;
+import apapedia.order.dto.response.CartResponseDTO;
 import apapedia.order.restservice.CartRestService;
-import jakarta.validation.Valid;
+import apapedia.order.dto.response.CustomerResponseDTO;
+import apapedia.order.dto.response.CatalogDTO;
 
 import java.util.UUID;
 import java.util.List;
@@ -37,9 +44,26 @@ public class CartRestController {
     @Autowired
     CartMapper cartMapper;
 
-    @PostMapping("/create")
-    public ResponseEntity<CartResponseDTO> createCart(@RequestBody CreateCartRequestDTO cartDTO){
-        var cart = cartMapper.createCartRequestDTOToCart(cartDTO);
+    private final WebClient webClient;
+
+    public CartRestController(WebClient.Builder webClientBuilder){
+        this.webClient = webClientBuilder.build();
+    }
+
+    @PostMapping("/create/{idUser}")
+    public ResponseEntity<CartResponseDTO> createCart(@PathVariable("idUser") UUID idUser, @RequestHeader(name = HttpHeaders.AUTHORIZATION) String authorizationHeader){
+        String jwtToken = cartService.extractToken(authorizationHeader);
+        var response = this.webClient
+                .get()
+                .uri("http://localhost:8082/api/customer/retrieve/" + idUser.toString())
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
+                .retrieve()
+                .bodyToMono(CustomerResponseDTO.class);
+        var customer = response.block();
+        var cart = new Cart();
+        cart.setTotalPrice(0);
+        cart.setCartId(customer.getCartId());
+        cart.setUserId(idUser);
         cartService.createRestCart(cart);
         var cartResponse = cartMapper.cartToCartResponseDTO(cart);
         return ResponseEntity.ok(cartResponse);
@@ -54,6 +78,17 @@ public class CartRestController {
             cart.setListCartItem(new ArrayList<>());
         }
         cart.getListCartItem().add(cartItem); 
+        int totalPrice = 0;
+        for (CartItem item : cart.getListCartItem()) {
+            var response = this.webClient
+                .get()
+                .uri("http://localhost:8084/api/catalog/" + item.getProductId())
+                .retrieve()
+                .bodyToMono(CatalogDTO.class);
+            var catalog = response.block();
+            totalPrice += item.getQuantity() * catalog.getPrice();
+        }
+        cart.setTotalPrice(totalPrice);
         cartService.updateRestCart(cart);
         var cartResponse = cartMapper.cartToCartResponseDTO(cart);
         return ResponseEntity.ok(cartResponse);
@@ -72,6 +107,18 @@ public class CartRestController {
             cartItem.setIsDeleted(cartItemFromDto.getIsDeleted());
             cartService.updateRestCartItem(cartItem);
             var cart = cartService.getCartById(cartItem.getCart().getCartId());
+            int totalPrice = 0;
+            for (CartItem item : cart.getListCartItem()) {
+                var response = this.webClient
+                    .get()
+                    .uri("http://localhost:8084/api/catalog/" + item.getProductId())
+                    .retrieve()
+                    .bodyToMono(CatalogDTO.class);
+                var catalog = response.block();
+                totalPrice += item.getQuantity() * catalog.getPrice();
+            }
+            cart.setTotalPrice(totalPrice);
+            cartService.updateRestCart(cart);
             var cartResponse = cartMapper.cartToCartResponseDTO(cart);
             return ResponseEntity.ok(cartResponse);
         }

@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreateCategoryRequestDTO {
     @NotNull
-    private String name;
+    private String categoryName;
 }

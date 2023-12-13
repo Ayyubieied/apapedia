@@ -14,8 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateCatalogRequestDTO {
-    @NotNull
-    private UUID seller;
+    // @NotNull
+    private UUID sellerId;
     @NotNull
     @Positive
     private Integer price;
@@ -24,10 +24,10 @@ public class CreateCatalogRequestDTO {
     @NotNull
     private String productDescription;
     @NotNull
-    private Category category;
+    private UUID category;
     @PositiveOrZero
     @NotNull
-    private Integer stok;
+    private Integer stock;
     @NotNull
-    private String image;
+    private String imagePath;
 }

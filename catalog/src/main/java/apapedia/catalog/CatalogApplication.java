@@ -22,21 +22,25 @@ public class CatalogApplication {
 	@Transactional
 	CommandLineRunner run(CategoryRestService categoryRestService) {
 		return args -> {
-			List<String> categoriesName = new ArrayList<>(List.of("Aksesoris Fashion", "Buku & Alat Tulis", "Elektronik",
-					"Fashion Bayi & Anak", "Fashion Muslim", "Fotografi", "Hobi & Koleksi",
-					"Jam Tangan", "Perawatan & Kecantikan", "Makanan & Minuman", "Otomotif",
-					"Perlengkapan Rumah", "Souvenir & Party Supplies"));
+			for (int i = 0; i < 0; i++) {
 
-			List<Category> categories = new ArrayList<>();
-			for (String categoryName : categoriesName) {
-				var category = new Category();
-				category.setCategoryName(categoryName);
-				categories.add(category);
+				List<String> categoriesName = new ArrayList<>(List.of("Aksesoris Fashion", "Buku & Alat Tulis", "Elektronik",
+						"Fashion Bayi & Anak", "Fashion Muslim", "Fotografi", "Hobi & Koleksi",
+						"Jam Tangan", "Perawatan & Kecantikan", "Makanan & Minuman", "Otomotif",
+						"Perlengkapan Rumah", "Souvenir & Party Supplies"));
+
+				List<Category> categories = new ArrayList<>();
+				for (String categoryName : categoriesName) {
+					var category = new Category();
+					category.setCategoryName(categoryName);
+					categories.add(category);
+				}
+
+				try {
+					categoryRestService.createCategories(categories);
+				} catch (Exception ignored) {
+				}
 			}
-
-			try {
-				categoryRestService.createCategories(categories);
-			} catch (Exception ignored) {}
 		};
 	}
 

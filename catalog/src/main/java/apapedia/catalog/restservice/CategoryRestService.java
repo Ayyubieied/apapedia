@@ -7,5 +7,7 @@ import java.util.List;
 public interface CategoryRestService {
     void createCategories(List<Category> categories);
 
+    List<String> getAllCategoryName();
+
     List<Category> getAll();
 }

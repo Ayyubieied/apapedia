@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface OrderDb extends JpaRepository<Order, UUID> {
     List<Order> findAllByCustomer(UUID userId);
     List<Order> findAllBySeller(UUID userId);
-    //Order findById(UUID id);
+    // Order findById(UUID id);
 }

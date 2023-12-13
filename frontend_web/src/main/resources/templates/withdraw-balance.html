@@ -23,10 +23,10 @@
             <div class="justify-content-center" style="margin:0 auto; padding:20px 0;">
                 <span>Sisa balance Anda</span>
                 <h2>
-                    <span th:text="${withdrawDTO.balance}" th:remove="tag">title</span>
+                    <span th:text="${withdrawDTO.balance}"></span>
                 </h2>
             </div>
-            <form th:action="@{/withdraw/{withdrawDTO}}" th:object="${withdrawDTO}" method="POST">
+            <form th:action="@{{idUser}(idUser=${withdrawDTO.idUser})}" th:object="${withdrawDTO}" method="POST">
               <div class="row form-group" style="margin:0 auto; padding:20px 0;">
                 <label>Jumlah tarik tunai</label>
                 <input class="row-cols-md-4 form-control input-sm" type="number" th:field="*{withdrawal}" />
@@ -40,7 +40,7 @@
         </div>
         
         <div class="alert alert-success" role="alert" th:if="${withdrawDTO.withdrawn}">
-            <span th:text="'Selamat penarikan dana Rp ' + '${withdrawDTO.withdrawal}' + ' berhasil' "></span>
+            <span th:text="'Selamat penarikan dana Rp ' + ${withdrawDTO.withdrawal} + ' berhasil' "></span>
         </div>
         
       </div>
