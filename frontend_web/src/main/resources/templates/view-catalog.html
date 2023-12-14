@@ -8,7 +8,7 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <object th:insert="~{fragments/fragment :: css}" th:remove="tag"></object>
     <object th:insert="~{fragments/fragment :: js}" th:remove="tag"></object>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div th:if="${isSeller}">
@@ -73,16 +73,16 @@
                             </div>
 
                             <!-- <div th:if="${isSeller}"> -->
-                                <div th:if="${listStat}">
+                                <div th:if="${listStats}">
                                     <div id="stats" style="border-top: 1px solid #ddd" class="py-2">
                                         <h4 class="d-flex justify-content-between align-items-center mb-3 py-1">
                                             <span class="text-black">Top 5 This Month</span>
                                         </h4>
-                                        <canvas id="horizontalBarChart" style="max-width: 600px; margin: auto;"></canvas>
+                                        <canvas id="chartOrder"></canvas>
                                     </div>
                                 </div>
 
-                                <div th:unless="${listStat}">
+                                <div th:unless="${listStats}">
                                     <div id="nostats" style="border-top: 1px solid #ddd" class="py-2">
                                         <h4 class="d-flex justify-content-between align-items-center mb-3 py-1">
                                             <span class="text-black">Top 5 This Month</span>
@@ -180,49 +180,53 @@
     </main>
 
     <script th:inline="javascript">
-        var listProduct = /*[[${listStat}]]*/ [];
+        var listProduct = /*[[${listStats}]]*/ [];
+        console.log(listProduct);
         var labels = listProduct.map(function(item) {
             return item.productName; // Adjust this based on your data structure
         });
         var chartData = listProduct.map(function(item) {
             return item.amount; // Adjust this based on your data structure
         });
-        var ctx = document.getElementById('horizontalBarChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'horizontalBar',
+
+        var colors = [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ];
+        var borderColors= [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ];
+        const ctx = document.getElementById('chartOrder');
+        new Chart(ctx, {
+            type: 'bar',
             data: {
-                labels: label,
+                labels: labels,
                 datasets: [{
-                    label: 'Sales',
+                    label: 'Jumlah Buku',
                     data: chartData,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)'
-                    ],
+                    backgroundColor: colors,
+                    borderColor: borderColors,
                     borderWidth: 1
                 }]
             },
             options: {
                 scales: {
-                    xAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
         });
-    </script>
+    </Script>
 
 </body>
 
