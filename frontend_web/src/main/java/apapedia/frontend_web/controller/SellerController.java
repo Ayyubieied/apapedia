@@ -160,6 +160,11 @@ public class SellerController {
 
         var userDTO = new UpdateUserRequestDTO();
         userDTO.setIdUser(user.getIdUser());
+        userDTO.setNameUser(user.getNameUser());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setAddress(user.getAddress());
 
         model.addAttribute("userDTO", userDTO);
         model.addAttribute("idUser", idUser);
@@ -176,7 +181,7 @@ public class SellerController {
         String jwtToken = (String) session.getAttribute("token");
 
         var response = this.webClient
-                .post()
+                .put()
                 .uri("http://localhost:8082/api/seller/edit/" + idUser)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
                 .bodyValue(userDTO)
@@ -187,5 +192,26 @@ public class SellerController {
         model.addAttribute("userDTO", userDTO);
         model.addAttribute("idUser", idUser);
         return "success-edit-seller";
+    }
+
+    
+    @GetMapping("/delete/{idUser}")
+    public String deleteUser(
+                        @PathVariable("idUser") UUID idUser, 
+                        HttpSession session,
+                        Model model){
+        String jwtToken = (String) session.getAttribute("token");
+        String sellerId = jwtService.getIdFromJwtToken(jwtToken);
+        var uri = "http://localhost:8082/api/seller/delete/"+sellerId;
+        System.out.println("Ini masuk ke delete " + uri);
+        var response = this.webClient
+                .delete()
+                .uri(uri)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
+                .retrieve()
+                .bodyToMono(String.class);
+
+        return "redirect:/logout-sso";
+        
     }
 }

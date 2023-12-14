@@ -1,13 +1,14 @@
 package apapedia.order.restservice;
 
 import java.util.*;
-import java.time.LocalDate;
 
 import apapedia.order.dto.request.CreateOrderDto;
 import apapedia.order.dto.request.StatsDto;
 import apapedia.order.dto.request.UpdateOrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import apapedia.order.dto.request.CreateOrderDto;
+import apapedia.order.dto.request.StatsDto;
 import apapedia.order.model.Cart;
 import apapedia.order.model.CartItem;
 import apapedia.order.model.Order;
@@ -28,6 +29,7 @@ public class OrderRestServiceImpl implements OrderRestService {
     @Override
     public void createOrder(List<CreateOrderDto> createOrderDto, UUID userId) {
         Map<UUID, Order> sellerOrders = new HashMap<>();
+        
 
         for (CreateOrderDto orderItem : createOrderDto) {
             OrderItem item = new OrderItem();
@@ -81,11 +83,15 @@ public class OrderRestServiceImpl implements OrderRestService {
         List<Order> orders = orderDb.findAllBySeller(userId);
         for (Order order:  orders) {
             if (order.getStatus() == 5) {
-                for (OrderItem orderItem: order.getOrderItem()                    ) {
-                    if (statsMap.containsKey(orderItem.getProductName())) {
-                        statsMap.put(orderItem.getProductName(), statsMap.get(orderItem.getProductName()) + 1);
+                for (OrderItem orderItem: order.getOrderItem()) {
+                    String productName = orderItem.getProductName();
+                    int quantity = orderItem.getQuantity();
+                    if (statsMap.containsKey(productName)) {
+                        // If yes, increment the count by the order item quantity
+                        statsMap.put(productName, statsMap.get(productName) + quantity);
                     } else {
-                        statsMap.put(orderItem.getProductName(), 1);
+                        // If no, add the product name to the map with the order item quantity
+                        statsMap.put(productName, quantity);
                     }
                 }
             }

@@ -95,6 +95,7 @@ public class CustomerRestController {
             customer.setUpdatedAt(LocalDateTime.now());
             customer.setCreatedAt(customerFromDto.getCreatedAt());
             customer.setCartId(customerFromDto.getCartId());
+            customer.setBalance(customerFromDto.getBalance());
             userService.updateRestCustomer(customer);
             customer.setPassword(encoder.encode(customer.getPassword()));
             var customerResponse = userMapper.customerToCustomerResponseDTO(customer);

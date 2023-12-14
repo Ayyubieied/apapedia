@@ -10,6 +10,11 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateUserRequestDTO extends CreateUserRequestDTO{
+public class UpdateUserRequestDTO{
+    private String nameUser;
+    private String username;
+    private String password;
+    private String email;
+    private String address;
     private UUID idUser;
 }

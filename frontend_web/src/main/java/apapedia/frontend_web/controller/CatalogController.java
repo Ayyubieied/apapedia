@@ -321,7 +321,7 @@ public class CatalogController {
                 var listStats = orderService.getStats(sellerId);
 
                 model.addAttribute("isSeller", true);
-                model.addAttribute("listStat", listStats);
+                model.addAttribute("listStats", listStats);
             } else {
                 url = "http://localhost:8084/api/catalog/view-all";
             }
