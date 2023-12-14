@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:frontend_mobile/screens/top-up.dart';
 import 'package:frontend_mobile/screens/view-catalog.dart';
 import 'package:frontend_mobile/utils/color_palette.dart';
 import 'package:http/http.dart' as http;
@@ -249,7 +250,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                                           String jwtToken = data['jwtToken'];
                                           saveData(jwtToken);
                                           Navigator.push(
-                                              context, MaterialPageRoute(builder: (context) => const ViewCatalogScreen()));
+                                              context, MaterialPageRoute(builder: (context) => const TopUpFormScreen()));
+                                              // context, MaterialPageRoute(builder: (context) => const ViewCatalogScreen()));
                                         }
                                       } else {
                                         print(response.body);

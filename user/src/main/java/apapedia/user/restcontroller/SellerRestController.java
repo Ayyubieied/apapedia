@@ -70,6 +70,7 @@ public class SellerRestController {
     public ResponseEntity<String> deleteUser(@PathVariable("idUser") UUID idSeller){
         var seller = userService.getSeller(idSeller);
         userService.deleteUser(seller);
+        System.out.println("Ini masuk ke delete");
         var body = "User berhasil dihapus";
         return ResponseEntity.ok(body);
     }
@@ -97,6 +98,8 @@ public class SellerRestController {
             var sellerFromDto = userService.getSeller(idSeller);
             seller.setUpdatedAt(LocalDateTime.now());
             seller.setCreatedAt(sellerFromDto.getCreatedAt());
+            seller.setBalance(sellerFromDto.getBalance());
+            seller.setCategory(sellerFromDto.getCategory());
             userService.updateRestSeller(seller);
             seller.setPassword(encoder.encode(seller.getPassword()));
             var sellerResponse = userMapper.sellerToSellerResponseDTO(seller);

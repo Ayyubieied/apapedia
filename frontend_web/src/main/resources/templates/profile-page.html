@@ -209,17 +209,22 @@
         <br>
         <div class="counter">
           <div class="row">
-            <div class="col-6 col-lg-4">
+            <div class="col-6 col-lg-3">
               <div class="count-data text-center">
                 <a type="button" class="btn btn-md btn-primary" th:href="@{/seller/withdraw/{idUser}(idUser=${idUser})}">Withdraw </a>
               </div>
             </div>
-            <div class="col-6 col-lg-4">
+            <div class="col-6 col-lg-3">
               <div class="count-data text-center">
                 <a type="button" class="btn btn-md btn-primary" th:href="@{/seller/edit/{idUser}(idUser=${idUser})}">Edit Profile </a>
               </div>
             </div>
-            <div class="col-6 col-lg-4">
+            <div class="col-6 col-lg-3">
+              <div class="count-data text-center">
+                <a type="button" class="btn btn-md btn-danger" th:href="@{/seller/delete/{idUser}(idUser=${idUser})}">Delete </a>
+              </div>
+            </div>
+            <div class="col-6 col-lg-3">
               <div class="count-data text-center">
                 <a type="button" class="btn btn-md btn-danger" href="/logout-sso">Logout </a>
               </div>

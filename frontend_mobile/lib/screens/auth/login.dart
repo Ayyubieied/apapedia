@@ -202,8 +202,8 @@ class _LoginFormScreenState extends State<LoginFormScreen> {
                                           print('Failed to retrieve user ID from token.');
                                         }
                                         Navigator.push(
-                                            context, MaterialPageRoute(builder: (context) => const ViewCatalogScreen()));
-                                            // context, MaterialPageRoute(builder: (context) => const TopUpFormScreen()));
+                                            // context, MaterialPageRoute(builder: (context) => const ViewCatalogScreen()));
+                                            context, MaterialPageRoute(builder: (context) => const TopUpFormScreen()));
                                       } else {
                                         print("gagal login");
                                       }

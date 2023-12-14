@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         // '/': (context) => const TopUpFormScreen(),
         '/': (context) => const LoginFormScreen(),
-        '/': (context) => const ProfilePage(),
+        // '/': (context) => const ProfilePage(),
         '/register': (context) => const RegisterFormScreen(),
       },
     );
